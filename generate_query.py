@@ -80,6 +80,7 @@ def get_existing_queries(line):
     else:
         return "\n".join([f"- {q}" for q in existing_queries])
 
+with open("log.txt", "w", encoding="utf-8"): pass
 def write_log(text):
     with open("log.txt", "a", encoding="utf-8") as f:
         f.write(text+"\n"+"="*50+"\n")
