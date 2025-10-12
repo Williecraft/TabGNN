@@ -6,7 +6,7 @@ import os
 
 table_path = r"table\train\feta\table.jsonl"
 query_path = r"data\train\feta\generate_query.jsonl"
-max_query_counts = 5
+max_query_counts = 2
 
 os.makedirs(os.path.dirname(query_path), exist_ok=True)
 
@@ -115,7 +115,7 @@ def main():
             if i < len(query_lines):
                 if response not in query_lines[i]["queries"]:
                     query_lines[i]["queries"].append(response)
-                    if len(query_lines[i]["queries"]) > max_query_counts: break
+                    if len(query_lines[i]["queries"]) >= max_query_counts: break
             else:
                 query_lines.append({
                     "table_id": table_id,
