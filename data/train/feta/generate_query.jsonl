@@ -198,3 +198,488 @@
 {"table_id": 18203, "table_name": "Club", "queries": ["What was the total number of European goals for Dinamo Zagreb?", "How many League appearances did Zrinjski Mostar have in 2003–04?", "What league did Dinamo Zagreb play in during the 2005–06 season?"]}
 {"table_id": 18437, "table_name": "Singles", "queries": ["Which single reached number 1 on the US Alt. Songs chart?", "List all singles from the album 'Bang!'.", "What was the UK peak position for \"Ship of Fools\"?"]}
 {"table_id": 13699, "table_name": "Specifications", "queries": ["What is the engine type for 2003–2006?", "What is the top speed for the 2007–2009 model?", "Which year range has the highest maximum power?"]}
+{"table_id": 1390, "table_name": "Settlements", "queries": ["Which settlements have a population less than 200?", "Which settlement has the largest population?"]}
+{"table_id": 14470, "table_name": "International competitions", "queries": ["Which competitions took place in 2013?", "How many times was a shot put event recorded?"]}
+{"table_id": 11398, "table_name": "NBA Finals", "queries": ["Which games were played on a Sunday?", "How many games did the Los Angeles Lakers win?"]}
+{"table_id": 15429, "table_name": "Achievements", "queries": ["Which competitions were held in 2001?", "How many 1st place positions were achieved?"]}
+{"table_id": 19105, "table_name": "Coaches", "queries": ["Which coaches had a term that included the year 2013?", "Which coach has the highest regular season win percentage?"]}
+{"table_id": 11559, "table_name": "Roles", "queries": ["Which roles have a soprano voice type?", "Who played Rinaldo in the Premiere Cast?"]}
+{"table_id": 14649, "table_name": "Results", "queries": ["None:\nHow many votes did Lew Wallace receive?", "Which party received the most votes?"]}
+{"table_id": 13472, "table_name": "Film", "queries": ["Which films were released in 2010?", "How many short films are listed?"]}
+{"table_id": 12242, "table_name": "Career statistics", "queries": ["In which seasons did Brentford play in the Fourth Division?", "What was the total number of FA Cup goals?"]}
+{"table_id": 11711, "table_name": "IPv6 addressing", "queries": ["What is the length of the Prefix?", "What is the description for bits 64-79?"]}
+{"table_id": 18145, "table_name": "Career statistics", "queries": ["How many league appearances did Nuneaton Town (loan) have?", "What was the highest number of FA Cup apps in a season?"]}
+{"table_id": 13726, "table_name": "Achievements", "queries": ["What events occurred at the All-Africa Games?", "How many 1st place positions were achieved?"]}
+{"table_id": 14986, "table_name": "1976–2000", "queries": ["Which hurricanes occurred in the 1978 season?", "Which hurricane had the lowest minimum pressure?"]}
+{"table_id": 17608, "table_name": "Club", "queries": ["What were the total goals for Caen?", "Which club had the highest number of total apps?"]}
+{"table_id": 18443, "table_name": "Television", "queries": ["Which titles aired on ABS-CBN?", "How many main roles are listed in the table?"]}
+{"table_id": 16992, "table_name": "Head coaching record", "queries": ["What was the overall record for the 1976-77 season?", "In which seasons was the NCAA New England Regional Champions postseason achieved?"]}
+{"table_id": 12809, "table_name": "Professional career", "queries": ["What is the total number of sacks recorded?", "How many interceptions did the Atlanta Falcons have?"]}
+{"table_id": 17588, "table_name": "Grammy Awards", "queries": ["How many awards were won in total?", "Which nominated works were in the 'Best Pop Vocal Album' category?"]}
+{"table_id": 11484, "table_name": "Population", "queries": ["What is the total number of female people?", "What is the total ST population?"]}
+{"table_id": 15251, "table_name": "Elections in the 2000s", "queries": ["None:\nHow many votes did Theresa May receive?", "What was the vote percentage for the Liberal Democrat party?"]}
+{"table_id": 17801, "table_name": "Awards and nominations", "queries": ["Which award shows are listed in the table?", "How many awards were won in 2007?"]}
+{"table_id": 15205, "table_name": "Theatre", "queries": ["Which shows were performed at the University of Melbourne?", "Which shows had a 'director' role?"]}
+{"table_id": 10101, "table_name": "Hugo Award", "queries": ["Which nominated works won a Hugo Award?", "How many works were nominated for 'Hugo Award for Best Novel'?"]}
+{"table_id": 14620, "table_name": "Honours", "queries": ["Which events happened in 2001?", "None:\nHow many 1st place positions were achieved?"]}
+{"table_id": 13573, "table_name": "Competition record", "queries": ["How many times was the 4 × 400 m relay event competed?", "Which competitions resulted in a 3rd place position?"]}
+{"table_id": 9645, "table_name": "Available models", "queries": ["What is the maximum L2 Cache?", "What is the Max TDP for models with a 60 MHz Bus?"]}
+{"table_id": 8158, "table_name": "Summer Olympics", "queries": ["Who were the flag bearers for Fencing?", "What is the earliest event year listed?"]}
+{"table_id": 14632, "table_name": "Statistics", "queries": ["Which clubs played in the Third Division North?", "What was the total number of league goals for Huddersfield Town?"]}
+{"table_id": 14078, "table_name": "Results", "queries": ["How many votes did Daniel Haines receive?", "What was the vote percentage for the Whig party?"]}
+{"table_id": 9059, "table_name": "Result", "queries": ["None:\nWhat was the turnout percentage?", "How many votes were cast for 'Referendum failed No'?"]}
+{"table_id": 16297, "table_name": "", "queries": ["What is the total number of registered electors?", "Which candidate received the most votes?"]}
+{"table_id": 1371, "table_name": "Million-selling and platinum records", "queries": ["Which songs were released in 1978?", "Which songs were certified platinum in 1977?"]}
+{"table_id": 13351, "table_name": "Release history", "queries": ["What formats were released in Japan?", "Which labels released digital downloads?"]}
+{"table_id": 11378, "table_name": "Version history", "queries": ["How many search types are in version 3.0?", "How many data fields per DrugCard are in version 4.0?"]}
+{"table_id": 20904, "table_name": "Qualifying one", "queries": ["How many drivers are from Germany?", "What is the fastest time recorded?"]}
+{"table_id": 10629, "table_name": "List of roller coasters", "queries": ["Which roller coasters are in the United States?", "What is the earliest year a roller coaster was opened?"]}
+{"table_id": 10102, "table_name": "Locations", "queries": ["Which parks have a 'Giant Drop' model?", "What is the maximum tower height listed?"]}
+{"table_id": 16848, "table_name": "2009 NFL Draft selections", "queries": ["Which players are from Texas?", "How many players were drafted in Round 7?"]}
+{"table_id": 16608, "table_name": "Filmography", "queries": ["Which films were directed by Saikat Nasir?", "Which films are based on 'Radical Story'?"]}
+{"table_id": 743, "table_name": "1997", "queries": ["What was the main event at the Royal Rumble?", "What was the venue for WrestleMania 13?"]}
+{"table_id": 14382, "table_name": "Teams at the time of folding", "queries": ["Which teams joined in 2017?", "Which teams are in the 'USA' division?"]}
+{"table_id": 14642, "table_name": "Seats changing hands", "queries": ["Which seats had a Labor member in the 2010 Election?", "Which seat had the largest margin in the 2014 Election?"]}
+{"table_id": 18768, "table_name": "Demography", "queries": ["What is the total population for the 20-29 age group?", "None:\nWhat is the total number of females?"]}
+{"table_id": 12241, "table_name": "Live-action", "queries": ["Which titles were released in 1970?", "How many titles have notes listed?"]}
+{"table_id": 9919, "table_name": "Fleet", "queries": ["Which aircraft are flying boats?", "Which aircraft has the highest total number?"]}
+{"table_id": 16168, "table_name": "Television", "queries": ["Which titles feature 'Herself' as the role?", "Which titles were released in 1956?"]}
+{"table_id": 8014, "table_name": "Result", "queries": ["How many votes did 'Referendum passed Yes' receive?", "What was the percentage for 'No' votes?"]}
+{"table_id": 9945, "table_name": "Nominations", "queries": ["Which awards were nominated in 2018?", "Which organizations are listed in the table?"]}
+{"table_id": 14400, "table_name": "Career statistics", "queries": ["None:\nWhat was the score for Offaly in the 2007 National League?", "In which years did Offaly play in National League Division 1A?"]}
+{"table_id": 18289, "table_name": "Statistical leaders", "queries": ["Who had the most RBI in the National League?", "What was the ERA for Rudy May?"]}
+{"table_id": 21177, "table_name": "Album appearances", "queries": ["Which songs appeared on albums in 1991?", "How many songs appeared on the album 'Panther'?"]}
+{"table_id": 18561, "table_name": "Film", "queries": ["What was the role in \"Casino Royale\"?", "How many films were released in 1976?"]}
+{"table_id": 18538, "table_name": "Barangays", "queries": ["None:\nWhat was the population of Abuleg in 2015?", "Which barangays had a population decrease?"]}
+{"table_id": 11481, "table_name": "Filmography", "queries": ["What films were released in 2004?", "Which films are in Tamil?"]}
+{"table_id": 11630, "table_name": "Ceremonies", "queries": ["What was the theme for the 2016 ceremony?", "Which ceremonies were held in West Jakarta?"]}
+{"table_id": 18087, "table_name": "Career statistics", "queries": ["Which seasons did Brentford play in the First Division?", "What was the total number of FA Cup goals?"]}
+{"table_id": 11844, "table_name": "2018", "queries": ["What is the IATA code for Nelson Airport?", "Which airport has the highest number of passengers?"]}
+{"table_id": 15357, "table_name": "Airing History", "queries": ["What was the airing time for episodes 1-365?", "What was the airing date for episodes 366-499?"]}
+{"table_id": 16275, "table_name": "Team (2)", "queries": ["What sport was played in 2002?", "None:\nWhat was the opponent in 2001?"]}
+{"table_id": 7863, "table_name": "Alternative names", "queries": ["What is the Romanized name for the Hindi language?", "Which languages have 'karela' as a Romanized name?"]}
+{"table_id": 14951, "table_name": "Demography", "queries": ["None:\nWhat is the literacy rate for males?", "What is the total number of houses?"]}
+{"table_id": 13934, "table_name": "Production", "queries": ["What is the total number of items produced?", "What are the delivery years for Prague?"]}
+{"table_id": 921, "table_name": "Studio albums", "queries": ["Which albums were released by Housecore Records?", "How many albums were released in 2012?"]}
+{"table_id": 14010, "table_name": "Local Service", "queries": ["Which routes travel on Richmond Terrace?", "Which routes have no overnight service?"]}
+{"table_id": 8035, "table_name": "Television", "queries": ["Which serials aired on BIG Magic?", "How many serials were released in 2015?"]}
+{"table_id": 8390, "table_name": "Teams", "queries": ["Which teams were founded in 2000?", "Which team was founded most recently?"]}
+{"table_id": 18952, "table_name": "Films", "queries": ["Which films were directed by Alfred Hitchcock?", "Which films were released in 1969?"]}
+{"table_id": 13489, "table_name": "Awards and nominations", "queries": ["What was the category for 'My Sweet Seoul, Daughter-in-Law'?", "How many times was 'Best Supporting Actress' nominated?"]}
+{"table_id": 14677, "table_name": "Qualifying", "queries": ["Which drivers are from Germany?", "What is the fastest time recorded?"]}
+{"table_id": 616, "table_name": "National Assembly elections", "queries": ["What was the number of seats in 2015?", "Which election had the highest number of votes?"]}
+{"table_id": 14794, "table_name": "United States Ambassadors to Australia", "queries": ["When did Nelson T. Johnson's term begin?", "Which ambassador served the longest time in office?"]}
+{"table_id": 8041, "table_name": "See also", "queries": ["Who was the Governor of Egypt from 721–724?", "Who was succeeded by Abd al-Rahman ibn Habib al-Fihri?"]}
+{"table_id": 15224, "table_name": "Route and stages", "queries": ["How many stages were 'Team time trial'?", "None:\nWhat was the winner of the Mountain stage?"]}
+{"table_id": 14921, "table_name": "Venues", "queries": ["What is the capacity of Estadio Nacional?", "Which venue has the highest capacity?"]}
+{"table_id": 18588, "table_name": "List", "queries": ["Which officeholders had a military political affiliation?", "Who served the shortest time in office?"]}
+{"table_id": 792, "table_name": "75 million to 79 million records", "queries": ["How many artists are from the United States?", "Which artist has the highest total certified units?"]}
+{"table_id": 11929, "table_name": "Club", "queries": ["What was the total number of FA Cup goals?", "Which seasons did Heart of Midlothian play in the Scottish Premier League?"]}
+{"table_id": 16638, "table_name": "Route and stages", "queries": ["What was the winner of the Mountain stage?", "How many flat stages are listed?"]}
+{"table_id": 12930, "table_name": "Club", "queries": ["What was the total number of goals for Málaga?", "Which club had the highest number of total apps?"]}
+{"table_id": 21311, "table_name": "Season-by-season", "queries": ["None:\nWhich season had the highest win percentage?", "Which teams did not qualify for the playoffs?"]}
+{"table_id": 15170, "table_name": "2009 Election Result", "queries": ["Which candidate received the most votes?", "What was the vote percentage for the BJP party?"]}
+{"table_id": 12171, "table_name": "Filmography", "queries": ["How many films are uncredited?", "What was the role in 'Seeds of Freedom'?"]}
+{"table_id": 9103, "table_name": "Population over 10 million", "queries": ["What is the population of Java?", "Which island has the highest density?"]}
+{"table_id": 1578, "table_name": "Out", "queries": ["Which players transferred to Guiseley?", "How many players had the position 'FW'?"]}
+{"table_id": 14080, "table_name": "Station list", "queries": ["Which stations are located in Gansu?", "What is the Chinese name for Guazhou station?"]}
+{"table_id": 8073, "table_name": "Engines and transmissions", "queries": ["Which models were available in 2012?", "What is the transmission for the SL 450?"]}
+{"table_id": 12869, "table_name": "Television", "queries": ["Which titles had a 'Guest star' role?", "Which titles were released in 2010?"]}
+{"table_id": 14629, "table_name": "Powertrain", "queries": ["What is the fuel consumption for the Hybrid engine?", "Which engines use a 5-speed G5M manual transmission?"]}
+{"table_id": 15914, "table_name": "Results", "queries": ["What percentage of votes did Wendell Willkie receive?", "None:\nHow many votes did Franklin D. Roosevelt receive?"]}
+{"table_id": 16375, "table_name": "Accolades", "queries": ["What was the result for the 'Best Pop Single' award?", "Which awards were from the 'Soul Train Music Awards'?"]}
+{"table_id": 16855, "table_name": "Singles", "queries": ["None:\nWhich songs were released in 2013?", "None:\nWhich songs are certified Platinum?"]}
+{"table_id": 13075, "table_name": "Club", "queries": ["What was the total number of National Cup goals for Burnley?", "Which seasons did Burnley play in the First Division?"]}
+{"table_id": 16301, "table_name": "New Zealand", "queries": ["Which ministers served under Prime Minister Ardern (L)?", "None:\nWhich ministers were in office in 2006?"]}
+{"table_id": 9728, "table_name": "Iron Man tournament", "queries": ["Who scored the most points in total?", "How many points did Sting score against Flair?"]}
+{"table_id": 18600, "table_name": "International competitions", "queries": ["How many competitions resulted in a 3rd place?", "Which events took place in 1990?"]}
+{"table_id": 9822, "table_name": "Models", "queries": ["Which models used the EMD 567 prime mover?", "None:\nWhat is the earliest build year?"]}
+{"table_id": 17514, "table_name": "2009 Election Result", "queries": ["What was the vote percentage for the BJD party?", "What was the total number of registered electors?"]}
+{"table_id": 18541, "table_name": "Recount", "queries": ["What was the percentage of votes for Al Franken?", "Which candidate received the most votes?"]}
+{"table_id": 2153, "table_name": "Awards and nominations", "queries": ["Which categories were won?", "Which works were nominated for an Emmy Award?"]}
+{"table_id": 16072, "table_name": "Maine–Massachusetts", "queries": ["Which venues are in Maryland?", "Which venue has the highest number of seats?"]}
+{"table_id": 17443, "table_name": "Competition record", "queries": ["Which competitions included an 800m event?", "How many 1st place positions were achieved?"]}
+{"table_id": 7881, "table_name": "Regular season", "queries": ["How many goals did Wayne Gretzky score?", "Who had the most assists?"]}
+{"table_id": 21588, "table_name": "Engines", "queries": ["What is the power of the 2.0 TD model?", "Which models use the 'Carb' fuel system?"]}
+{"table_id": 17784, "table_name": "Release history", "queries": ["How many releases are there for Arista?", "What was the release date for the United States?"]}
+{"table_id": 2214, "table_name": "Stations", "queries": ["Which stations have a Classical format?", "What is the call sign for the News station in Denver?"]}
+{"table_id": 16957, "table_name": "Accolades", "queries": ["What was the award for the 'Best Film' category?", "How many awards were won?"]}
+{"table_id": 9999, "table_name": "", "queries": ["Which categories were won in 2016?", "How many awards were won?"]}
+{"table_id": 15347, "table_name": "Season results", "queries": ["Which teams won at Mt. Fuji?", "Who were the winning drivers in Round 1?"]}
+{"table_id": 17349, "table_name": "2014 Election Result", "queries": ["What was the vote percentage for the BJP party?", "None:\nWhich party received the most votes?"]}
+{"table_id": 7978, "table_name": "List of Pakistani Ambassadors to the United States", "queries": ["Which ambassadors entered office in 1952?", "How many times did Muhammad Ali Bogra serve as ambassador?"]}
+{"table_id": 13797, "table_name": "Theatre credits", "queries": ["What was the role in \"Hamilton\"?", "How many productions were in the 'Broadway' category?"]}
+{"table_id": 11682, "table_name": "Awards", "queries": ["Which works were nominated for an Oscar?", "None:\nWhat was the category for 'American Sniper'?"]}
+{"table_id": 17150, "table_name": "Accolades", "queries": ["None:\nWhich awards were won?", "How many awards were nominated by The Headies?"]}
+{"table_id": 17216, "table_name": "2012", "queries": ["What was the percentage of votes for Corey Lewandowski?", "Who received the most votes?"]}
+{"table_id": 18294, "table_name": "As actor", "queries": ["Which films were directed by Teja?", "What was the role in 'Jayam'?"]}
+{"table_id": 17725, "table_name": "Accolades", "queries": ["How many awards were won by Zee Avi/Rendra Zawawi?", "Which awards were won in 2014?"]}
+{"table_id": 17750, "table_name": "Theatre", "queries": ["Which titles featured 'Othello' as a role?", "How many productions were there in 2000?"]}
+{"table_id": 9578, "table_name": "Arkansas", "queries": ["Who appointed Benjamin Johnson?", "None:\nWhat was the end reason for Daniel Ringo?"]}
+{"table_id": 8550, "table_name": "Venue", "queries": ["What is the venue for Swimming?", "What sports are listed?"]}
+{"table_id": 17998, "table_name": "2009 Lynn Mayoral Election", "queries": ["What was the total number of votes?", "Who received the most votes?"]}
+{"table_id": 11749, "table_name": "1965-67", "queries": ["Which engine name has the highest output?", "Which model year features a 428 cu in displacement?"]}
+{"table_id": 15884, "table_name": "Main draw", "queries": ["Which country has the highest score?", "What is Clark McConachy's score?"]}
+{"table_id": 14312, "table_name": "Competition record", "queries": ["What was the fastest time recorded for the 3000 m s'chase?", "How many different venues hosted competitions?"]}
+{"table_id": 14430, "table_name": "Specifications", "queries": ["What is the power of the HH600 engine?", "What is the overall length in meters?"]}
+{"table_id": 12933, "table_name": "Stage", "queries": ["How many lead roles were performed?", "List all roles performed in 2004."]}
+{"table_id": 12779, "table_name": "1990s", "queries": ["Which film was nominated for a Golden Globe Award?", "Who directed the film 'Chaplin'?"]}
+{"table_id": 13937, "table_name": "Singles", "queries": ["Which singles have certifications?", "Which single peaked at number 1 in Australia?"]}
+{"table_id": 16583, "table_name": "Classification leadership table", "queries": ["None:\nWho led the 'Young rider classification' at the final stage?", "Which team led the 'Teams classification' on Stage 3?"]}
+{"table_id": 1975, "table_name": "Fleet details", "queries": ["How many items were scrapped?", "How many items have a 'CE Yellow' final livery?"]}
+{"table_id": 355, "table_name": "List of Pakistani Ambassadors to the United States", "queries": ["Who was the Pakistani Ambassador to the US in 1954?", "Who served more than once as ambassador?"]}
+{"table_id": 12825, "table_name": "Awards and Nominations", "queries": ["Which nominated works won an award?", "List all categories for awards in 2013."]}
+{"table_id": 10786, "table_name": "Schedule and ratings", "queries": ["Which show had the most viewers?", "Which city hosted the Final show?"]}
+{"table_id": 7899, "table_name": "Teams", "queries": ["None:\nHow many unique players were in the 'Lead' position?", "Which player was in the 'Second' position for the 2014-15 season?"]}
+{"table_id": 17712, "table_name": "Songwriting and production", "queries": ["What roles did Drake have in songs?", "Which song reached US #1?"]}
+{"table_id": 12649, "table_name": "Electoral history", "queries": ["Which candidate received the highest percentage of votes?", "What was the vote count for Jennifer Granholm?"]}
+{"table_id": 18911, "table_name": "Additional photography credits", "queries": ["List all titles where the notes include 'Camera operator'.", "Which titles had a 'Director of Photography: 2nd Unit' credit?"]}
+{"table_id": 14006, "table_name": "Film", "queries": ["How many films did John Schultz direct?", "What role did the actor play in \"Like Mike\"?"]}
+{"table_id": 1312, "table_name": "NatWest Series results since 2006", "queries": ["In which seasons was the Twenty20 result 'No series'?", "How many times did England win a series?"]}
+{"table_id": 14115, "table_name": "Comparison with the 1923 Stadium", "queries": ["What is the capacity of the New Stadium?", "What is the opening day for the Old Stadium?"]}
+{"table_id": 16521, "table_name": "Computing codes", "queries": ["What is the Unicode hex for CYRILLIC CAPITAL LETTER UK?", "What is the UTF-8 hex for CYRILLIC SMALL LETTER UK?"]}
+{"table_id": 15751, "table_name": "Filmography", "queries": ["How many TV series were listed?", "What was the role in 'Red Sorghum'?"]}
+{"table_id": 17596, "table_name": "Chamber of Representatives", "queries": ["What percentage of votes did the Catholic Party receive?", "What was the seat change for the Liberal Party?"]}
+{"table_id": 16584, "table_name": "Singles", "queries": ["How many singles are on the 'Thinkin' Problem' album?", "What are the peak chart positions for \"Steppin' Out'\"?"]}
+{"table_id": 18179, "table_name": "For reconstruction", "queries": ["Which station was flooded during Hurricane Sandy?", "Which stations reopened in 2011?"]}
+{"table_id": 11922, "table_name": "Ministry of Defence", "queries": ["Which ships are of type 'Ro-Ro Sealift'?", "What is the displacement of the MV Maersk Rapier?"]}
+{"table_id": 20914, "table_name": "Ships", "queries": ["How many ships were completed for the 'Regia Marina'?", "Which ships were 'Never completed'?"]}
+{"table_id": 11779, "table_name": "Track listing", "queries": ["List all songs sung by '183 Club'.", "Which song has the longest length?"]}
+{"table_id": 10238, "table_name": "Sports", "queries": ["Which club plays in the 'National Basketball Association'?", "Which clubs have no League Championships?"]}
+{"table_id": 756, "table_name": "UK Parliament elections", "queries": ["How many votes did UKIP receive?", "None:\nWhich constituencies had elections in 2010?"]}
+{"table_id": 13878, "table_name": "2009 Election Result", "queries": ["How many votes did Jagabandhu Majhi receive?", "Which candidate received the fewest votes?"]}
+{"table_id": 9686, "table_name": "Health concerns", "queries": ["What is the half-life of Cesium-137?", "Which isotope has the highest GI absorption?"]}
+{"table_id": 18880, "table_name": "Singles", "queries": ["How many singles are on the 'Cinema' album?", "Which singles peaked in the top 5 in Italy?"]}
+{"table_id": 17481, "table_name": "Film", "queries": ["Which films were released in the 1970s?", "What was the role in 'The Sound of Music'?"]}
+{"table_id": 18001, "table_name": "Regular season and playoffs", "queries": ["How many playoff goals did Rochester Americans score?", "What was the highest regular season points for Shawinigan Cataractes?"]}
+{"table_id": 14123, "table_name": "As lead artist", "queries": ["Which songs appeared on the 'Lights' album?", "None:\nWhich songs peaked in the top 10 in the UK?"]}
+{"table_id": 16935, "table_name": "Summary", "queries": ["Who is the head coach for Australia?", "What is the sum of capacities for Australian venues?"]}
+{"table_id": 9559, "table_name": "List of summits", "queries": ["How many summits are classified as 'Munro'?", "Which summit has the highest absolute height?"]}
+{"table_id": 17079, "table_name": "Achievements", "queries": ["What was the fastest time recorded for the Marathon event?", "What was the position at the Olympic Games?"]}
+{"table_id": 10094, "table_name": "Statewide", "queries": ["What percentage of votes did \"Referendum failed No\" receive?", "How many votes did 'Yes' receive?"]}
+{"table_id": 18893, "table_name": "Career statistics", "queries": ["How many playoff goals did Rochester Americans score?", "None:\nWhat is the total number of goals scored by Blackpool?"]}
+{"table_id": 12248, "table_name": "Club", "queries": ["What is the total number of goals scored by FC St. Pauli?", "How many Bundesliga appearances did Werder Bremen make in 2003-04?"]}
+{"table_id": 17302, "table_name": "Competition record", "queries": ["None:\nWhich venue hosted the European Junior Championships?", "What was the best position achieved in the triple jump?"]}
+{"table_id": 14071, "table_name": "Honours and awards", "queries": ["How many awards were won in 2007?", "What was the category for the entry 'Handcuffs'?"]}
+{"table_id": 12736, "table_name": "Club career statistics", "queries": ["None:\nWhat were the total goals for Persepolis?", "How many League apps did Foolad Yazd have in 2013-14?"]}
+{"table_id": 8146, "table_name": "Administrative division", "queries": ["What is the population of Będzin?", "How many 'urban' type Gminas are listed?"]}
+{"table_id": 8474, "table_name": "East–West Bowl results", "queries": ["How many times did the East team win?", "Which location hosted the most games?"]}
+{"table_id": 15959, "table_name": "List of NHL outdoor games", "queries": ["None:\nWhich team was the 'Away team' for the Heritage Classic in 2003?", "How many Winter Classic events are listed?"]}
+{"table_id": 13303, "table_name": "Games", "queries": ["Which game is available on the most platforms?", "None:\nWhat games did Coffee Stain Studios develop?"]}
+{"table_id": 9328, "table_name": "Model by model", "queries": ["What is the power of the Škoda 130?", "None:\nWhat is the transmission type for the Škoda 136?"]}
+{"table_id": 13680, "table_name": "Stations", "queries": ["How many stations are located in 'Aoba-ku, Sendai'?", "None:\nWhat is the Japanese name for the 'Sendai' station?"]}
+{"table_id": 14512, "table_name": "Career statistics", "queries": ["None:\nHow many League goals did Hødd score in the 2015 season?", "None:\nHow many FA Cup goals did Blackpool score in the 2007-08 season?"]}
+{"table_id": 17471, "table_name": "Electoral History", "queries": ["What percentage of votes did Emily M. Brewer receive in the General Election?", "None:\nWhat was the total vote count for the General Election?"]}
+{"table_id": 9208, "table_name": "Nash Chase recording", "queries": ["What is the release info for 'Kiwi Classics Volume 6'?", "What is the format of 'Explosive Hits 73'?"]}
+{"table_id": 11600, "table_name": "Television", "queries": ["Which titles were television movies?", "How many episodes did 'Missing' have?"]}
+{"table_id": 12442, "table_name": "As actress", "queries": ["What role was played in 'CSI: NY'?", "None:\nWhich year had the most titles?"]}
+{"table_id": 13617, "table_name": "Career statistics", "queries": ["What are the total League appearances for Mansfield Town?", "How many FA Cup goals did Northampton Town score?"]}
+{"table_id": 13512, "table_name": "Career statistics", "queries": ["What was the total number of FA Cup goals for Stoke City?", "None:\nHow many League goals did Stoke City score in the 1946–47 season?"]}
+{"table_id": 9641, "table_name": "NDA", "queries": ["How many seats were contested by the Bharatiya Janata Party?", "What is the total number of seats won?"]}
+{"table_id": 939, "table_name": "List of public colleges", "queries": ["How many colleges are listed?", "Which college was established in 1966?"]}
+{"table_id": 15729, "table_name": "Films", "queries": ["Which films had a 'Main Role'?", "What role was played in 'Honey, I Shrunk the Kids'?"]}
+{"table_id": 8327, "table_name": "League Cup", "queries": ["Who scored for the match against Scunthorpe United?", "Which match had the highest attendance?"]}
+{"table_id": 10617, "table_name": "Gender Statistics", "queries": ["Which subindex has the lowest rank?", "Which subindex has the highest score?"]}
+{"table_id": 13584, "table_name": "Results", "queries": ["How many seats did Supporters of Dimitrios Rallis win?", "What is the total number of seats?"]}
+{"table_id": 13912, "table_name": "Vacancy", "queries": ["What was the vote count for the Liberal party?", "What was the percentage of votes for the Conservative party?"]}
+{"table_id": 18244, "table_name": "As lead artist", "queries": ["None:\nList all songs on the \"La storia di Valentina Monetta\" album.", "Which songs were released in 2013?"]}
+{"table_id": 12844, "table_name": "Nielsen rankings", "queries": ["How many seasons aired on 'The WB'?", "Which season had the most viewers?"]}
+{"table_id": 16947, "table_name": "Film", "queries": ["How many films were released in 2008?", "List all films where the role was 'Herself'."]}
+{"table_id": 7718, "table_name": "Race and ethnicity", "queries": ["How did the percentage of Asian population change from 1970 to 2010?", "Which racial composition had the highest percentage in 2010?"]}
+{"table_id": 18262, "table_name": "Film", "queries": ["What was the role in 'Whiplash'?", "How many films were released in 2014?"]}
+{"table_id": 16509, "table_name": "Achievements", "queries": ["What was the position for the 400 m hurdles in the 2000 Olympic Games?", "How many different competitions are listed?"]}
+{"table_id": 18983, "table_name": "Adult", "queries": ["How many titles were released in 2008?", "None:\nHow many titles did 'Pink Bird Media' produce?"]}
+{"table_id": 14236, "table_name": "Singles", "queries": ["Which songs peaked in the top 20 on the US Main chart?", "How many songs are on the 'Superjudge' album?"]}
+{"table_id": 17805, "table_name": "Achievements", "queries": ["None:\nList all competitions held in La Habana.", "What was the highest position achieved in the high jump?"]}
+{"table_id": 1626, "table_name": "Competitive highlights", "queries": ["What was the best position achieved at the World Championships?", "None:\nWhat was the position at the European Championships in 1966?"]}
+{"table_id": 163, "table_name": "Atlantic Coast Championships", "queries": ["What was the score in 1989?", "How many times did a team achieve 1st place?"]}
+{"table_id": 1985, "table_name": "Most career goals", "queries": ["Who has the most career goals?", "Which player played the most games?"]}
+{"table_id": 17535, "table_name": "Career statistics", "queries": ["How many League goals did Middlesbrough score in the 1930–31 season?", "None:\nWhat was the total number of FA Cup goals for Brentford?"]}
+{"table_id": 11926, "table_name": "Results", "queries": ["What was the percentage of votes for the Rikken Seiyūkai?", "What was the seat change for Jinin Kai?"]}
+{"table_id": 10239, "table_name": "Statistics", "queries": ["What is the total yards for Syracuse?", "What are the rushes-yards (net) for Minnesota?"]}
+{"table_id": 16853, "table_name": "Remixes", "queries": ["How many remixes were released in 2016?", "What is the original artist for \"Elevated\"?"]}
+{"table_id": 9918, "table_name": "Status Table", "queries": ["How many items are owned by 'Aurizon'?", "How many items have a 'Scrapped' status?"]}
+{"table_id": 8337, "table_name": "Speciation", "queries": ["What is the DNA G + C Content for Sulfurimonas gotlandica?", "What is the DNA A + T Content for Sulfurimonas paralvinellae?"]}
+{"table_id": 13858, "table_name": "New Zealand broadcast channels", "queries": ["Which channel launched in 2008?", "Which channels are available via Satellite DVB Avalon FTA?"]}
+{"table_id": 15369, "table_name": "Filmography", "queries": ["Which films are short films?", "What year was 'Gamer' released?"]}
+{"table_id": 8513, "table_name": "Overview", "queries": ["Which building has the most floors?", "What is the height in meters of the 'IBM Tower'?"]}
+{"table_id": 13469, "table_name": "Ford Everest", "queries": ["What is the power of the 3.0 MZR-CD engine?", "What is the engine type/code for the 2.5 MZR-CD?"]}
+{"table_id": 13847, "table_name": "Achievements", "queries": ["Which venue hosted the World Championships?", "What was the best position achieved at European Indoor Championships?"]}
+{"table_id": 15971, "table_name": "Filmography", "queries": ["Which films are short films?", "None:\nWhich films were released in Malayalam?"]}
+{"table_id": 18758, "table_name": "Election results", "queries": ["What was the vote count for Aparna Yadav?", "Which candidate received the fewest votes?"]}
+{"table_id": 17235, "table_name": "Specifications", "queries": ["What is the maximum 1-class seating capacity for model 787-9?", "Which model has the longest length?"]}
+{"table_id": 12272, "table_name": "Discography", "queries": ["Who composed songs for the film 'Hero'?", "Which films were released in 2019?"]}
+{"table_id": 12799, "table_name": "International competitions", "queries": ["What was the position for the 100 m event at the 2008 Commonwealth Youth Games?", "None:\nHow many different venues hosted competitions?"]}
+{"table_id": 13258, "table_name": "Club statistics", "queries": ["Which club scored the most KFA Cup goals?", "How many League apps did Júbilo Iwata have in 2009?"]}
+{"table_id": 13996, "table_name": "Career statistics", "queries": ["None:\nWhat was the division for Brentford in 1992-93?", "What was the division for Plymouth Argyle in 1985–86?"]}
+{"table_id": 16424, "table_name": "Debates", "queries": ["Which sponsor hosted the debate in Las Vegas, NV?", "How many debates did Paul participate in?"]}
+{"table_id": 16442, "table_name": "Club", "queries": ["What is the total number of goals for Caen?", "What was the division for Granada in 2012-13?"]}
+{"table_id": 9089, "table_name": "Team title", "queries": ["Which team has the highest points?", "What are the points for Navy?"]}
+{"table_id": 13315, "table_name": "International competitions", "queries": ["What was the winning score for the U23 team in 2017?", "None:\nList all competitions held in Bydgoszcz, Poland."]}
+{"table_id": 16950, "table_name": "Awards and nominations", "queries": ["Who won the Filmfare Award for Best Supporting Actor?", "Who was nominated for the Filmfare Best Comedian Award?"]}
+{"table_id": 9128, "table_name": "Filmography", "queries": ["List all films in Telugu.", "None:\nWhat year was 'Chinnodu' released?"]}
+{"table_id": 18482, "table_name": "Nordhordland prosti", "queries": ["How many churches were built in 1865?", "List all churches in Lindås municipality."]}
+{"table_id": 9631, "table_name": "Shootings", "queries": ["Which names were associated with a .50 rifle calibre?", "Which shootings occurred in 1993?"]}
+{"table_id": 12200, "table_name": "Achievements", "queries": ["How many different competitions are listed?", "What was the best position achieved at European Indoor Championships?"]}
+{"table_id": 12726, "table_name": "Titleholders", "queries": ["How many representatives are from Punjab province?", "None:\nHow many titleholders were hosted in Toronto?"]}
+{"table_id": 16282, "table_name": "Comparison", "queries": ["What is the muzzle velocity in m/s for the .358 Win cartridge?", "Which cartridge has the highest muzzle energy?"]}
+{"table_id": 17934, "table_name": "Career statistics", "queries": ["None:\nWhich clubs played in the Premier League?", "How many League goals did Stoke City score in the 1946–47 season?"]}
+{"table_id": 8371, "table_name": "Cinemas", "queries": ["How many cinemas opened in the 1970s?", "Which cinema has the most screens?"]}
+{"table_id": 16699, "table_name": "John Nicholls Medal", "queries": ["Which player received the fewest votes?", "Who is in 1st place?"]}
+{"table_id": 11643, "table_name": "Fleet", "queries": ["Which aircraft is a freighter?", "What is the passenger capacity of the Fokker F70?"]}
+{"table_id": 17941, "table_name": "Achievements", "queries": ["What was the fastest Marathon time recorded?", "List all positions achieved at the Olympic Games."]}
+{"table_id": 16789, "table_name": "Club", "queries": ["What was the total number of Cup goals for AZ?", "What was the division for Plymouth Argyle in 1985–86?"]}
+{"table_id": 14680, "table_name": "Home media", "queries": ["What is the Region 1 release date for M*A*S*H Season 1?", "How many episodes are in M*A*S*H Season 4?"]}
+{"table_id": 14151, "table_name": "Singles", "queries": ["Which song peaked at number 1 on the US Alt chart?", "How many singles are on the 'Villains' album?"]}
+{"table_id": 11542, "table_name": "Ships", "queries": ["How many ships were sold to a commercial interest before being sunk?", "List all ships that were sold for scrap."]}
+{"table_id": 16407, "table_name": "Regular season", "queries": ["What was the attendance for the match?", "Who was the referee for the match?"]}
+{"table_id": 9927, "table_name": "The Republican Convention Tally results", "queries": ["What were the 'after switches' votes for Richard M. Nixon?", "Who received the most Vice-Presidential votes?"]}
+{"table_id": 14698, "table_name": "Singles", "queries": ["Which songs have certifications?", "Which songs peaked at number 1 in the UK?"]}
+{"table_id": 12432, "table_name": "Semi-final 3", "queries": ["Which artists advanced to the 'Final'?", "What was the total votes for Lisa Ajax?"]}
+{"table_id": 15910, "table_name": "Awards and nominations", "queries": ["How many awards were won by 'La Ciénaga'?", "Which film was nominated for the Palme d'Or?"]}
+{"table_id": 12937, "table_name": "American Comedy Awards", "queries": ["Who won an award in 1994?", "How many awards did Helen Hunt win?"]}
+{"table_id": 12317, "table_name": "Contestants", "queries": ["What is the title of the song by Abdulla Ziyau?", "Which artists failed to qualify?"]}
+{"table_id": 16020, "table_name": "TV Appearance & Variety Shows", "queries": ["How many titles were released in 2015?", "Which titles aired on Mnet?"]}
+{"table_id": 13564, "table_name": "Films", "queries": ["None:\nWhich films were released in Malayalam?", "What role was played in 'Madrasapattinam'?"]}
+{"table_id": 15745, "table_name": "Competition record", "queries": ["None:\nHow many different venues hosted competitions?", "What was the position at the 2005 Universiade?"]}
+{"table_id": 13552, "table_name": "Career statistics", "queries": ["What is the overall career total number of goals?", "How many League apps did Sogndal have in 2014?"]}
+{"table_id": 20777, "table_name": "Studio albums", "queries": ["What is the US R&B chart position for \"Devil's Gun\"?", "How many albums were released by Westbound?"]}
+{"table_id": 15790, "table_name": "Current members", "queries": ["What colors are associated with the Rogers Rams?", "Which schools joined in 1926?"]}
+{"table_id": 18526, "table_name": "Achievements", "queries": ["What was the position for the 3000 m s'chase event in 1995?", "Which venues hosted a Marathon event?"]}
+{"table_id": 18799, "table_name": "Elections in the 2000s", "queries": ["What was the percentage of votes for the Labour party?", "Which candidate received the fewest votes?"]}
+{"table_id": 19054, "table_name": "Results", "queries": ["Which candidate received the fewest votes?", "What was the vote count for Al Franken?"]}
+{"table_id": 10047, "table_name": "Primary elections", "queries": ["Who received the most votes?", "What was the vote count for William S. Hart?"]}
+{"table_id": 19003, "table_name": "Singles", "queries": ["Which songs are on the 'Holland' album?", "How many singles were released in 2018?"]}
+{"table_id": 14333, "table_name": "Film", "queries": ["What is the role in 'Genghis Khan'?", "How many films were released in 1995?"]}
+{"table_id": 17818, "table_name": "Engines", "queries": ["What is the power of the 518 model?", "What is the torque of the 520i model?"]}
+{"table_id": 13918, "table_name": "Club", "queries": ["What was the total number of goals for Brescia in 1996–97?", "What were the Continental goals for Inter Milan in 1998-99?"]}
+{"table_id": 1436, "table_name": "VQ37VHR", "queries": ["What is the power output of the Nissan 370Z/Fairlady Z?", "Which models were produced from 2009-2013?"]}
+{"table_id": 14660, "table_name": "Filmography", "queries": ["Which films are in Kannada?", "Which films are currently filming?"]}
+{"table_id": 11837, "table_name": "Old Dominion men's basketball", "queries": ["How many years had a home record of 14-1?", "What was the highest attendance recorded?"]}
+{"table_id": 7826, "table_name": "Roller coasters", "queries": ["Which roller coasters are in 'DC Universe'?", "Which roller coasters opened in 1998?"]}
+{"table_id": 12444, "table_name": "International statistics", "queries": ["How many goals did England score in 2006?", "Which year had the most Apps?"]}
+{"table_id": 8544, "table_name": "Guinness Record times", "queries": ["What is the time for Matthew Ahn's 2015 record?", "Who holds the record for the fastest time?"]}
+{"table_id": 19056, "table_name": "Club", "queries": ["How many League goals did Hearts score in the 2005-06 season?", "What are the total League goals for Daegu FC?"]}
+{"table_id": 12469, "table_name": "Filmography", "queries": ["Which films were released in Hindi?", "Which films were released in Tamil?"]}
+{"table_id": 15809, "table_name": "Final", "queries": ["What was Inge de Bruijn's time?", "Who finished in 5th place?"]}
+{"table_id": 18920, "table_name": "Filmography", "queries": ["How many titles aired on BBC Two?", "What role was played in 'Strictly Come Dancing'?"]}
+{"table_id": 12687, "table_name": "Girls under 20 (Junior)", "queries": ["Who won the gold medal in the High Jump?", "What was the bronze medal time for the 200 metres?"]}
+{"table_id": 17342, "table_name": "Awards and nominations", "queries": ["How many awards did 'La Cérémonie' win?", "What was the category for the 'Volpi Cup (Venice Film Festival)'?"]}
+{"table_id": 21441, "table_name": "Engines", "queries": ["What engines were produced in 1983?", "What is the torque of the 520i model?"]}
+{"table_id": 18787, "table_name": "Career statistics", "queries": ["What was the total League goals for Barrow?", "How many League apps did Chester City have in 2008-09?"]}
+{"table_id": 501, "table_name": "Largest Southeast Asian banks by total assets", "queries": ["How many banks are from Malaysia?", "Which bank has the highest total assets?"]}
+{"table_id": 21643, "table_name": "Members of Parliament", "queries": ["How many members are listed in the table?", "What party was John Moore from?"]}
+{"table_id": 18204, "table_name": "Sprints", "queries": ["Which events were 'Former WR'?", "Which competition was held in Madrid, Spain?"]}
+{"table_id": 14638, "table_name": "", "queries": ["What is the older age for the Rupelian stage?", "How many stages are in the Eocene epoch?"]}
+{"table_id": 16799, "table_name": "Achievements", "queries": ["Which competition was held in Rome, Italy?", "How many different venues hosted competitions?"]}
+{"table_id": 405, "table_name": "History", "queries": ["Who were the champions in 2013?", "What was the runners-up team in 2013?"]}
+{"table_id": 14443, "table_name": "As lead artist", "queries": ["Which songs are on the 'Robyn Is Here' album?", "Which songs peaked at number 1 in Sweden?"]}
+{"table_id": 18696, "table_name": "Competition record", "queries": ["How many times did the participant finish 1st?", "None:\nWhat was the time for the 1500 m event in 2012?"]}
+{"table_id": 639, "table_name": "F", "queries": ["Which craters have a 'Muslim first name' eponym?", "Which crater has the largest diameter?"]}
+{"table_id": 16056, "table_name": "International competitions", "queries": ["What was the best position achieved at European Indoor Championships?", "What was the competition held in Rome, Italy?"]}
+{"table_id": 15330, "table_name": "Television", "queries": ["Which shows aired on Colors TV?", "What role was played in 'Kundali Bhagya'?"]}
+{"table_id": 14803, "table_name": "Results", "queries": ["What was the vote count for the National Front?", "What percentage of votes did 'Against' receive?"]}
+{"table_id": 13311, "table_name": "Results", "queries": ["Which party won the most seats?", "How many votes did the New Democratic party receive?"]}
+{"table_id": 10255, "table_name": "U-boats assigned to the flotilla", "queries": ["How many U-boats are listed?", "Is U-453 assigned to this flotilla?"]}
+{"table_id": 8930, "table_name": "Other rides and attractions", "queries": ["Which rides were manufactured by Arrow Dynamics?", "How many rides opened in 1967?"]}
+{"table_id": 17846, "table_name": "Qualifying", "queries": ["What was the lap time for Michael Schumacher?", "How many drivers are from Germany?"]}
+{"table_id": 17779, "table_name": "Awards and Nominations", "queries": ["How many awards were given for 'Best Actress'?", "List all categories for awards in 2013."]}
+{"table_id": 9676, "table_name": "Schedule and results", "queries": ["Which team played at Crystal Rink?", "How many 'Challenge' match types are listed?"]}
+{"table_id": 1201, "table_name": "Political career", "queries": ["How many times was Hammett unopposed?", "What was Hammett's highest vote percentage?"]}
+{"table_id": 8454, "table_name": "Georgia", "queries": ["Which judges ended service due to resignation?", "Who was Jeremiah La Touche Cuyler appointed by?"]}
+{"table_id": 14297, "table_name": "Semifinal: Vancouver Millionaires defeat Regina Capitals, 5 goals to 2", "queries": ["What was the winning team of Game 2?", "Where was Game 1 played?"]}
+{"table_id": 11467, "table_name": "Chronology of the tallest buildings in Jacksonville", "queries": ["What is the height of the Dyal-Upchurch Building?", "Which building has the most floors?"]}
+{"table_id": 12478, "table_name": "Former", "queries": ["What instruments did Larry Van Kriedt play?", "Which members have 'none – live performances only' as release contributions?"]}
+{"table_id": 18354, "table_name": "2009 Election Results", "queries": ["Which candidate received the fewest votes?", "What was the vote count for Prasad Kumar Harichandan?"]}
+{"table_id": 17937, "table_name": "Senja prosti", "queries": ["What is the year built for Dyrøy Church?", "How many churches are in the 'Berg' municipality?"]}
+{"table_id": 1512, "table_name": "International appearances", "queries": ["Which venues hosted a 'British Home Championship' match?", "What was the result of the match against England?"]}
+{"table_id": 12680, "table_name": "Club career statistics", "queries": ["How many League apps did Gombak United have in 2010?", "What was the total number of goals for Gombak United in 2011?"]}
+{"table_id": 10004, "table_name": "New short codes", "queries": ["What is the new numbering for Bristol?", "What is the old numbering for Leeds?"]}
+{"table_id": 17874, "table_name": "Television", "queries": ["What role was played in 'The Legend of the Condor Heroes'?", "How many titles were released in 2002?"]}
+{"table_id": 18415, "table_name": "Awards", "queries": ["How many awards did Larry Klein win?", "What awards did 'River: The Joni Letters' win?"]}
+{"table_id": 7886, "table_name": "Titles and honours", "queries": ["Which honours were given by the Government of India?", "What honour was received in 2013?"]}
+{"table_id": 9555, "table_name": "Coastal guns", "queries": ["Which gun had the highest number in July 1914?", "What was the number of '57 mm 48 caliber Nordenfelt' guns in May 1915?"]}
+{"table_id": 12642, "table_name": "Final", "queries": ["What was Christian Taylor's final mark?", "How many participants are from the United States?"]}
+{"table_id": 796, "table_name": "Fifth Rank", "queries": ["Who was promoted to Senior Fifth Rank, Lower Grade?", "What is the Japanese text for 'Junior Fifth Rank, Upper Grade'?"]}
+{"table_id": 15796, "table_name": "Original Australian Production", "queries": ["Which nominees won an award?", "List all categories that resulted in a 'Nominated' status."]}
+{"table_id": 8090, "table_name": "Pressing history", "queries": ["What is the format for the label 'Tearbridge'?", "Which country is associated with the 'Sargent House' label?"]}
+{"table_id": 11383, "table_name": "Results", "queries": ["What was the winning vehicle (TA2) for Round 1?", "How many races did John Paul win in TA2?"]}
+{"table_id": 13185, "table_name": "List of Major Stations", "queries": ["What is the date opened for Lamanda Park Junction?", "Which stations are located in Pasadena?"]}
+{"table_id": 11895, "table_name": "Winners of the Irish International Grand Prix Races", "queries": ["How many races did Boris Ivanowski win?", "Which constructor won the most races?"]}
+{"table_id": 16962, "table_name": "Filmography", "queries": ["What role was played in 'The Ginger Tree'?", "How many films were released in 2002?"]}
+{"table_id": 15433, "table_name": "Filmography", "queries": ["List films where the actor had a voice role.", "Which films received a Bodil Award?"]}
+{"table_id": 16362, "table_name": "2000s", "queries": ["What titles did Suhail Al-Abdul direct?", "Which titles were released in 2001?"]}
+{"table_id": 14033, "table_name": "Achievements", "queries": ["List all marathon events.", "What events resulted in a 1st place position?"]}
+{"table_id": 770, "table_name": "Batting statistics", "queries": ["Which players achieved 3 home runs?", "Who has the most runs scored?"]}
+{"table_id": 13556, "table_name": "Satellite Awards", "queries": ["List all recipients who won an award.", "List categories where Game of Thrones was nominated."]}
+{"table_id": 10564, "table_name": "International matches hosted", "queries": ["Which teams participated in the 2005 FIFA U-17 World Championship?", "What was the highest attendance for a Copa América match?"]}
+{"table_id": 20851, "table_name": "Notable rankings", "queries": ["Which events have a world ranking of 1st?", "What is the time for a 4x4x4 single event?"]}
+{"table_id": 20934, "table_name": "Singles", "queries": ["Who was the champion in 2018?", "Who was the runner-up in 2017?"]}
+{"table_id": 13108, "table_name": "Accolades", "queries": ["Which awards were won by the Dardenne brothers?", "List all categories for Deborah Francois."]}
+{"table_id": 20808, "table_name": "Theatre", "queries": ["List shows performed in 2002.", "What roles were played in the show 'Wicked'?"]}
+{"table_id": 12300, "table_name": "Starring roles", "queries": ["List films that are TV series.", "Which films featured the role 'Ares'?"]}
+{"table_id": 17019, "table_name": "Club statistics", "queries": ["List the different leagues Ventforet Kofu played in.", "How many total goals did Ventforet Kofu score in 2000?"]}
+{"table_id": 16631, "table_name": "List", "queries": ["Which Prime Ministers were Independent?", "Who was the Prime Minister under Konaré?"]}
+{"table_id": 17368, "table_name": "Club", "queries": ["How many goals did Juventus score in the 2017–18 Serie A season?", "What is the total number of Europe goals for Juventus?"]}
+{"table_id": 17020, "table_name": "Top Ten Shootout", "queries": ["Who drove a Holden VF Commodore?", "Which drivers are from Triple Eight Race Engineering?"]}
+{"table_id": 16385, "table_name": "Achievements", "queries": ["Which events resulted in a 3rd place finish?", "List events from the World Championships."]}
+{"table_id": 18456, "table_name": "NCAA Division II", "queries": ["List seasons where Gannon reached the NCAA Quarterfinals.", "Which seasons did Gannon have no postseason?"]}
+{"table_id": 14135, "table_name": "Individual leaders", "queries": ["Which players are from the United States?", "Which players are ranked T1?"]}
+{"table_id": 14435, "table_name": "Electoral history", "queries": ["Who received the most votes?", "What was the total number of votes?"]}
+{"table_id": 19189, "table_name": "Career statistics", "queries": ["How many league goals did Cerrito score in the 2012–13 season?", "How many continental goals did Cerro score?"]}
+{"table_id": 17377, "table_name": "Competition record", "queries": ["What competitions were held in 2001?", "Which competitions had a 1st place position?"]}
+{"table_id": 10767, "table_name": "1970–1983", "queries": ["Who was the goalkeeper in 1972?", "List forwards from 1970."]}
+{"table_id": 18500, "table_name": "International goals", "queries": ["What was the opponent in the 2017 Africa Cup of Nations qualification?", "What was the result of the match against São Tomé and Príncipe?"]}
+{"table_id": 16620, "table_name": "Awards and nominations", "queries": ["What awards did Raam Reddy win?", "What categories were nominated in 2015?"]}
+{"table_id": 12673, "table_name": "Ward results", "queries": ["Who received the most votes?", "What was the voter turnout percentage?"]}
+{"table_id": 13832, "table_name": "Statistics", "queries": ["What was the total number of appearances for Aston Villa in the 1913–14 season?", "How many FA Cup goals did Aston Villa score in the 1910–11 season?"]}
+{"table_id": 9893, "table_name": "Final", "queries": ["Who scored the winning goal?", "Who won the final?"]}
+{"table_id": 10531, "table_name": "Scores", "queries": ["Who scored the most points?", "Which players are from the USSR?"]}
+{"table_id": 19178, "table_name": "List of Chief Ministers of Delhi", "queries": ["Who was the Chief Minister from the Aam Aadmi Party?", "Who served as Chief Minister for the longest duration?"]}
+{"table_id": 12407, "table_name": "Awards and nominations", "queries": ["Which awards were won in 2004?", "What categories was \"Pure Morning\" nominated for?"]}
+{"table_id": 15184, "table_name": "Athletics", "queries": ["What was Edmilsa Governo's final time in the 400m T12 event?", "What events did Edmilsa Governo not advance in?"]}
+{"table_id": 18114, "table_name": "Current fleet", "queries": ["How many MI-26T aircraft are in service?", "What is the total number of aircraft in service?"]}
+{"table_id": 21368, "table_name": "Singles", "queries": ["What album is \"Too Bad\" on?", "Which titles have a chart position of #25?"]}
+{"table_id": 12304, "table_name": "US Track and field Championships", "queries": ["Where were the USA Olympic Trials held?", "List all events that were 'Long jump'."]}
+{"table_id": 15297, "table_name": "International competitions", "queries": ["Which competitions were held in 1983?", "Which events had a 1st place position?"]}
+{"table_id": 765, "table_name": "", "queries": ["What was the 1st prize for the 2018 WSOP Main Event?", "Who served as Chief Minister for the longest duration?"]}
+{"table_id": 14849, "table_name": "International competitions", "queries": ["Which events had a 1st place position?", "What competitions were held in Moscow?"]}
+{"table_id": 19067, "table_name": "Awards and nominations", "queries": ["Which nominated works won an award?", "What categories are associated with the Golden Horse Awards?"]}
+{"table_id": 18092, "table_name": "As actor", "queries": ["Which films had a cameo appearance?", "Which films received a Filmfare Award?"]}
+{"table_id": 16907, "table_name": "Speed skating", "queries": ["What was the final time for Jan Bos in the 1000m event?", "Who had the best final rank in the 500m event?"]}
+{"table_id": 17847, "table_name": "Club statistics", "queries": ["How many goals did Avispa Fukuoka score in the 1996 J1 League season?", "How many League Cup appearances did FC Tokyo have in 1999?"]}
+{"table_id": 14406, "table_name": "Achievements", "queries": ["Which events had a 1st place position?", "What events took place at the World Championships in 2007?"]}
+{"table_id": 15265, "table_name": "Film", "queries": ["List films that are direct-to-video.", "What films were released in 2000?"]}
+{"table_id": 8937, "table_name": "Discography", "queries": ["List titles that include \"Live\" in their track list.", "What titles were released in 1990?"]}
+{"table_id": 12156, "table_name": "2014 Election Results", "queries": ["How many votes did INC receive?", "What was the vote majority?"]}
+{"table_id": 19195, "table_name": "Route and stages", "queries": ["Who won Stage 6?", "List all 'Plain stage' courses."]}
+{"table_id": 590, "table_name": "Other Awards", "queries": ["What awards did Roy Kim win?", "What was the category for Superstar K4?"]}
+{"table_id": 1501, "table_name": "Non-football, multi-sport conferences", "queries": ["List conferences headquartered in Macon, Georgia.", "Which conference has the most members?"]}
+{"table_id": 11764, "table_name": "Semi-final 2", "queries": ["List songs that went to 'Siste Sjansen'.", "What artists made it to the Final?"]}
+{"table_id": 13861, "table_name": "Film work", "queries": ["List films directed by Drake Doremus.", "What films were released in 2014?"]}
+{"table_id": 8167, "table_name": "Locations", "queries": ["Which parks have a Giant Drop model?", "When did Kings Dominion open?"]}
+{"table_id": 14035, "table_name": "Managing statistics", "queries": ["What was the win percentage for West Germany?", "How many games did Olympique Marseille play?"]}
+{"table_id": 12146, "table_name": "International goals", "queries": ["What was the result of the match against Papua New Guinea?", "How many goals were scored in the 2018 FIFA World Cup qualification?"]}
+{"table_id": 17637, "table_name": "Club", "queries": ["How many goals did Brescia score in Europe?", "How many league appearances did Palermo make in the 2005-06 season?"]}
+{"table_id": 12744, "table_name": "College", "queries": ["What was the overall record for Tabor in 2002?", "What was the NAIA Coaches'# for Tabor in 2003?"]}
+{"table_id": 18972, "table_name": "Summary of results of the 2009 election", "queries": ["Which candidate received the lowest percentage of votes?", "How many Independent candidates are listed?"]}
+{"table_id": 10268, "table_name": "Elite races", "queries": ["Which athletes are from Kenya?", "What was the fastest time recorded?"]}
+{"table_id": 17192, "table_name": "Theatre credits", "queries": ["List all Broadway productions.", "What roles were played in the production 'Aladdin'?"]}
+{"table_id": 13520, "table_name": "Statistics", "queries": ["What are the receiving statistics for team GT?", "Which players are listed in the 'Passing' category?"]}
+{"table_id": 125, "table_name": "Results and team statistics", "queries": ["Who was the head coach of Ohio State?", "What was Michigan's overall record?"]}
+{"table_id": 18036, "table_name": "Discography", "queries": ["What titles were released by EMI?", "How many titles were released in 2017?"]}
+{"table_id": 17068, "table_name": "Statistics", "queries": ["What were Partizan's league goals in the 1976–77 season?", "How many league appearances did Partizan make in the 1978–79 season?"]}
+{"table_id": 20990, "table_name": "Stations", "queries": ["Which stations are in Fushimi-ku?", "List stations with transfers."]}
+{"table_id": 13052, "table_name": "Results", "queries": ["What was the total number of votes?", "Who was the Democratic candidate?"]}
+{"table_id": 17484, "table_name": "Results", "queries": ["Who was the Democratic candidate?", "Who received the most votes?"]}
+{"table_id": 18276, "table_name": "Constituency history", "queries": ["What percentage of votes did Edward Hart receive?", "How many votes did the Conservative party receive?"]}
+{"table_id": 14927, "table_name": "Singles", "queries": ["What was the peak chart position for \"Bad Boy\" in Australia?", "Which titles are on the album 'The Other Woman'?"]}
+{"table_id": 13066, "table_name": "Results", "queries": ["What was the total number of seats?", "How many votes did the Swedish Social Democratic Party receive?"]}
+{"table_id": 17981, "table_name": "Film", "queries": ["What films were released in 2000?", "List films that are short films."]}
+{"table_id": 17388, "table_name": "Track and field", "queries": ["What events took place at the US Olympic Trials?", "Which competitions had a 1st place position?"]}
+{"table_id": 17953, "table_name": "International competition", "queries": ["What was the venue for the 2007 World Championships?", "Which competitions had a 'DNF' note?"]}
+{"table_id": 18109, "table_name": "Singles", "queries": ["What is the label for the title 'Empire'?", "What titles were released in 2004?"]}
+{"table_id": 11368, "table_name": "Summary", "queries": ["Which models were built by Urban Transportation Development Corporation?", "What is the fleet size for the Innovia Metro Mark III?"]}
+{"table_id": 434, "table_name": "Discography", "queries": ["Which titles were released by Barsuk Records?", "List titles released in 2005."]}
+{"table_id": 12807, "table_name": "Statistics", "queries": ["What was the total number of FA Cup goals for Port Vale?", "How many total appearances did Bournemouth & Boscombe Athletic make in the 1963–64 season?"]}
+{"table_id": 772, "table_name": "Games Convention", "queries": ["How many exhibitors were there in 2004?", "Which year had the most visitors?"]}
+{"table_id": 679, "table_name": "Rugby on TV", "queries": ["List competitions on NBC & NBCSN.", "Which competitions began airing in 2011?"]}
+{"table_id": 1749, "table_name": "Club", "queries": ["What division did AB play in during the 2012-13 season?", "What are the total league goals for Strømsgodset?"]}
+{"table_id": 14486, "table_name": "Elections in the 1990s", "queries": ["How many votes did Roger Stott receive?", "What was the voter turnout percentage?"]}
+{"table_id": 1392, "table_name": "Production", "queries": ["Which Mark was first built in March 1946?", "How many marks were built by Supermarine?"]}
+{"table_id": 13264, "table_name": "Red Dwarf VI (1993)", "queries": ["Which episodes were directed by Andy de Emmony?", "What is the original air date of the episode \"Legion\"?"]}
+{"table_id": 17249, "table_name": "Filmography", "queries": ["Which films are debut Hindi?", "List films directed by Raj Madiraju."]}
+{"table_id": 19111, "table_name": "Competition record", "queries": ["What event was held in Barbados?", "Which events had a 1st place position?"]}
+{"table_id": 870, "table_name": "Current fleet at the time of the end of aviation operations in 2013", "queries": ["How many Boeing 747-400F aircraft are active?", "How many Boeing 747-200F aircraft are stored?"]}
+{"table_id": 17589, "table_name": "Qualifying", "queries": ["Which driver had the fastest Q1 time?", "List drivers from Williams-Renault."]}
+{"table_id": 17178, "table_name": "Spain", "queries": ["Which venues have no resident organizations listed?", "What is the date built for the Liceu venue?"]}
+{"table_id": 18156, "table_name": "Season summary", "queries": ["Who was eliminated in the episode \"Tubby Lunchbox\"?", "Who won immunity in 'Persona Non Grata'?"]}
+{"table_id": 17126, "table_name": "Results", "queries": ["What party did Edwin Corboy belong to?", "Who was the Nationalist candidate?"]}
+{"table_id": 17149, "table_name": "Awards and nominations", "queries": ["Which works won 'Best Actress'?", "List all works nominated in 2014."]}
+{"table_id": 16077, "table_name": "By-election 1972", "queries": ["What was the total turnout?", "How many votes did Maya Ray receive?"]}
+{"table_id": 13503, "table_name": "Filmography", "queries": ["Which films are in Telugu language?", "Which films received a Bodil Award?"]}
+{"table_id": 11404, "table_name": "Film", "queries": ["Which films feature the role 'Sarah'?", "List films released in 2007."]}
+{"table_id": 16284, "table_name": "Achievements", "queries": ["What competitions took place in 1998?", "Which competitions had a 2nd place finish?"]}
+{"table_id": 18039, "table_name": "Release history", "queries": ["List all release formats.", "Who produced the releases in South Korea?"]}
+{"table_id": 17890, "table_name": "Singles", "queries": ["What titles are on the album 'Riot!'?", "Which singles peaked at number 1 in Australia?"]}
+{"table_id": 18803, "table_name": "Winning premierships", "queries": ["Who won the 1971 VFL Grand Final?", "What was the attendance at the 1971 VFL Grand Final?"]}
+{"table_id": 16094, "table_name": "Films", "queries": ["List films produced by GMA Films.", "What films were released in 2012?"]}
+{"table_id": 12199, "table_name": "Accolades", "queries": ["What categories are listed for The Headies?", "Which categories had a 'Won' result?"]}
+{"table_id": 11815, "table_name": "Numbering table", "queries": ["What is the quantity for CR nos. 294-324?", "What are the LMS numbers for BR nos. 57683-57692?"]}
+{"table_id": 16219, "table_name": "Film", "queries": ["List films released in 2012.", "Which films are direct-to-video?"]}
+{"table_id": 17027, "table_name": "Match Scorecard and Details", "queries": ["What was Hawthorn's final score?", "Who won the 1976 VFL Grand Final?"]}
+{"table_id": 17026, "table_name": "Young Artist Award", "queries": ["What categories was 'Degrassi: The Next Generation' nominated for?", "Which awards were won for 'Degrassi: The Next Generation'?"]}
+{"table_id": 9850, "table_name": "Final", "queries": ["Who won the final match?", "Where was the final match held?"]}
+{"table_id": 13153, "table_name": "Film", "queries": ["List films that are short films.", "List all roles played in films released in 2012."]}
+{"table_id": 13677, "table_name": "Release history", "queries": ["When was 'Occult Classic' released in the United States?", "What is the label for 'Alt Classic'?"]}
+{"table_id": 16342, "table_name": "Exit list", "queries": ["What destinations are associated with Henderson county?", "List all exits in Owensboro."]}
+{"table_id": 13050, "table_name": "Lines", "queries": ["What is the distance of the Chiba Line?", "Which lines include 'Narita Airport' in their endpoints?"]}
+{"table_id": 16476, "table_name": "Career statistics", "queries": ["Which clubs played in the First Division?", "How many FA Cup goals did Oldham Athletic score in the 1968–69 season?"]}
+{"table_id": 16512, "table_name": "Television", "queries": ["What roles were played in 'Doctors'?", "List all titles from 2012."]}
+{"table_id": 20830, "table_name": "Comparative table", "queries": ["What is the bore for model 8F?", "Which model has the highest power output?"]}
+{"table_id": 18892, "table_name": "Parliament", "queries": ["How many seats did the Umma Party win?", "Which parties are marked as 'New'?"]}
+{"table_id": 7858, "table_name": "Pairs figure skating with Kilius", "queries": ["What was the position in the European Championships in 1955?", "What was the position in the German Championships in 1954?"]}
+{"table_id": 14126, "table_name": "Competition record", "queries": ["List all 400m hurdles competitions.", "Which competitions had a 2nd place position?"]}
+{"table_id": 14928, "table_name": "Demography", "queries": ["What is the total number of males?", "What is the population for the 0-9 age group?"]}
+{"table_id": 12294, "table_name": "B", "queries": ["List all stations on Line U7.", "Which stations are at grade?"]}
+{"table_id": 13741, "table_name": "Filmography", "queries": ["List titles released in 2016.", "What roles were played in 'Coronation Street'?"]}
+{"table_id": 15107, "table_name": "Opening timeline", "queries": ["List segments with a 'Phase 2' name.", "None:\nHow many stations are in the 'Xiliuhu — Zhengzhou Sports Center' segment?"]}
+{"table_id": 8501, "table_name": "Opera", "queries": ["List all operas by Giuseppe Verdi.", "Which operas were performed at the Metropolitan Opera?"]}
+{"table_id": 19137, "table_name": "Submissions for the Academy Award", "queries": ["What category was 'Jeans' submitted for?", "What films were submitted in 1996?"]}
+{"table_id": 14603, "table_name": "Release history", "queries": ["What formats were released in Germany?", "List all releases by Polydor Records."]}
+{"table_id": 16933, "table_name": "Career statistics", "queries": ["What were Skeid's league goals in the 2004 season?", "What division did Drøbak-Frogn play in during 2005?"]}
+{"table_id": 17485, "table_name": "Elsewhere", "queries": ["List all cities in Germany.", "Which cities used the term 'Stein Flachs'?"]}
+{"table_id": 16243, "table_name": "Awards and nominations", "queries": ["Which awards were won for 'Nowhere to Go'?", "What categories was 'Suburgatory' nominated for?"]}
+{"table_id": 8414, "table_name": "Stadiums and locations", "queries": ["Which team was the Lesotho Premier League Champions?", "List all teams from Maseru."]}
+{"table_id": 19199, "table_name": "Prime Ministers of Tanzania", "queries": ["Who were the Prime Ministers under Nyerere?", "Which Prime Ministers were from Chama Cha Mapinduzi?"]}
+{"table_id": 13322, "table_name": "Club", "queries": ["Which clubs played in the 1st Division?", "How many league goals did Wrexham score in the 1971–72 season?"]}
+{"table_id": 20995, "table_name": "Eon Productions films", "queries": ["Which films were portrayed by David Hedison?", "What films were released in 1965?"]}
+{"table_id": 8933, "table_name": "Episodes", "queries": ["What is the original air date of \"Episode 2\"?", "Who directed \"Episode 1\"?"]}
+{"table_id": 16075, "table_name": "Singles", "queries": ["What titles were released in 2010?", "Which titles are on the album 'White Men Are Black Men Too'?"]}
+{"table_id": 15391, "table_name": "2006 Broadway revival", "queries": ["What categories were nominated for a Tony Award?", "Who was nominated for Best Performance by a Featured Actress in a Musical?"]}
+{"table_id": 16102, "table_name": "Awards", "queries": ["Which awards were won in 2004?", "What categories were nominated in 2014?"]}
+{"table_id": 14343, "table_name": "Awards and nominations", "queries": ["Which nominated works won an award?", "What categories were won in 2016?"]}
+{"table_id": 18461, "table_name": "International competitions", "queries": ["Which events had a 1st place position?", "What competitions were held in Moscow?"]}
+{"table_id": 17833, "table_name": "Television", "queries": ["List all titles that are 'telenovela'.", "Which titles were released in 2001?"]}
+{"table_id": 13527, "table_name": "Career statistics", "queries": ["What division did Sunderland play in during the 2004-05 season?", "How many total FA Cup goals did Oxford United score?"]}
+{"table_id": 14600, "table_name": "Best/Favourite Drama", "queries": ["What was the TVB Anniversary Award winner in 2004?", "List all winners of the Malaysia TVB Awards."]}
+{"table_id": 10684, "table_name": "Preservation", "queries": ["Which entries have a BR Green livery?", "What films were released in 1998?"]}
+{"table_id": 14550, "table_name": "Final leaderboard", "queries": ["Which players are from Scotland?", "Which players are ranked T1?"]}
+{"table_id": 13416, "table_name": "Chamber of Representatives", "queries": ["How many seats did the Liberal Party win?", "What was the total number of votes?"]}
+{"table_id": 16615, "table_name": "Club", "queries": ["How many continental goals did Al Mokawloon Al Arab score?", "How many league appearances did Palermo make in the 2005-06 season?"]}
+{"table_id": 16203, "table_name": "Stage credits", "queries": ["What roles were played in 'Rent'?", "Which productions were held at the Palace Theatre?"]}
+{"table_id": 14842, "table_name": "Filmography", "queries": ["Which films feature the role 'Taxi driver'?", "List films released in 2004."]}
+{"table_id": 18829, "table_name": "Club statistics", "queries": ["Which clubs played in the J1 League?", "How many League Cup appearances did Albirex Niigata have in 1999?"]}
+{"table_id": 11634, "table_name": "Points classification", "queries": ["Who has the most points?", "Which riders are from Germany?"]}
+{"table_id": 17158, "table_name": "Statistics", "queries": ["How many league goals did Walsall score in the 1958-59 season?", "What was Walsall's total goals in the 1960-61 season?"]}
+{"table_id": 21497, "table_name": "Results", "queries": ["What was the total number of votes?", "What percentage of votes were 'For'?"]}
+{"table_id": 13762, "table_name": "Songwriter and production credits", "queries": ["List songs by Jason Derulo.", "Which songs were released by Atlantic Records?"]}
+{"table_id": 17252, "table_name": "Motocross Grand Prix Results", "queries": ["Which teams achieved 1st rank?", "What was the 250cc class rank in 1970?"]}
+{"table_id": 17903, "table_name": "Head coaching record", "queries": ["Which years did Chattanooga have a T–1st standing?", "What was Alabama's overall record in 1931?"]}
+{"table_id": 18565, "table_name": "Writer", "queries": ["List all episodes of 'The Killing'.", "List episodes that aired in October 1993."]}
+{"table_id": 19103, "table_name": "Regular season", "queries": ["How many passing touchdowns did SEA have in 2015?", "What were SEA's rushing yards in 2014?"]}
+{"table_id": 1407, "table_name": "Filmography", "queries": ["List films from 2018.", "Which films feature the role 'Taxi driver'?"]}
+{"table_id": 16443, "table_name": "Crossings", "queries": ["Which crossings are for tourist use only?", "Which crossings are open until midnight?"]}
+{"table_id": 16847, "table_name": "Achievements", "queries": ["What events have 'NR' in their notes?", "What films were released in 1998?"]}
+{"table_id": 13480, "table_name": "Statistics", "queries": ["What were the enplanements in 2005?", "Which year had the highest enplanements?"]}
+{"table_id": 11371, "table_name": "Primary elections", "queries": ["Who had the most votes in 1980?", "How many votes did Donald M. Payne receive?"]}
+{"table_id": 17127, "table_name": "Singles", "queries": ["What is the record label for the song 'Grizzly Bear'?", "List songs released in 1967."]}
+{"table_id": 16932, "table_name": "List of Duncan Chow's TV Series", "queries": ["Which TV shows were filmed in Singapore?", "List films where the role was 'Taxi driver'."]}
+{"table_id": 13655, "table_name": "Awards and nominations", "queries": ["How many awards did Arisan! 2 win?", "List all categories for the Indonesian Movie Awards."]}
+{"table_id": 11633, "table_name": "California", "queries": ["What works used 'limestone' as a medium?", "What films were released in 1998?"]}
+{"table_id": 16800, "table_name": "Singles", "queries": ["What titles were released in 2006?", "Which album is \"These Things\" on?"]}
+{"table_id": 13203, "table_name": "International competitions", "queries": ["List all events from the Commonwealth Games.", "What events were held in 2016?"]}
+{"table_id": 942, "table_name": "Norway", "queries": ["What was the catch in 1960?", "Which year had the highest catch?"]}
+{"table_id": 1543, "table_name": "Records", "queries": ["What is the record for most hits, career?", "What is the highest career batting average?"]}
+{"table_id": 10076, "table_name": "Cincinnati Bengals", "queries": ["What were the receptions in 2005?", "How many touchdowns did the team have in 2007?"]}
+{"table_id": 2155, "table_name": "Stadia and locations", "queries": ["What is the capacity of Gayfield Park?", "Which films feature the role 'Taxi driver'?"]}
+{"table_id": 12923, "table_name": "2012 election", "queries": ["What percentage of votes did Sandy Cole receive?", "Who was the Democratic candidate?"]}
+{"table_id": 630, "table_name": "BWF World Tour", "queries": ["List all Super 1000 level tournaments.", "Which tournaments took place in 2019?"]}
+{"table_id": 11422, "table_name": "Political chiefs and governors", "queries": ["Who was assassinated in office?", "Who was the political chief from July 1822?"]}
+{"table_id": 223, "table_name": "Mayors of the City of Anchorage", "queries": ["Which mayors' terms ended in 1928?", "Who was mayor in 1925?"]}
+{"table_id": 16044, "table_name": "Major results", "queries": ["What was the venue for the 2006 World Championships?", "Which competitions had a rank of 4?"]}
+{"table_id": 13294, "table_name": "Career statistics", "queries": ["How many league appearances did Stoke City make in the 1929-30 season?", "What was the total number of goals for Stoke City in the 1927-28 season?"]}
+{"table_id": 13358, "table_name": "Filmography", "queries": ["Which films are in Telugu language?", "Which films received a Bodil Award?"]}
+{"table_id": 9277, "table_name": "Filmography", "queries": ["What films were released in 1995?", "List all films in Hindi."]}
+{"table_id": 14159, "table_name": "Barangays", "queries": ["Which Barangay had the highest population in 2015?", "Which barangays experienced a population increase?"]}
+{"table_id": 12988, "table_name": "Contestants", "queries": ["Who quit the game?", "Which contestants were from the 'Tayak' original tribe?"]}
