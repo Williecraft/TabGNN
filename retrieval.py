@@ -61,7 +61,7 @@ def main():
     
     query = input("輸入query：").strip()
 
-    top = retrieve_top_k(query=query, embeddings_path=r"c:\\Users\\user\\Desktop\\TableRetrieval\\TabGNN\\data\\train\\feta\\embeddings_query.jsonl", top_k=8)
+    top = retrieve_top_k(query=query, embeddings_path=r"data\\train\\feta\\embeddings_query.jsonl", top_k=8)
     
     for i, item in enumerate(top, start=1):
         print(f"{i}. table_id={item['table_id']} | table_name={item['table_name']} | score={item['score']:.4f}")

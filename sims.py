@@ -42,8 +42,8 @@ def transform_queries_to_embeddings(input_path: str, output_path: str) -> None:
 
 
 if __name__ == "__main__":
-    default_input = r"c:\Users\user\Desktop\TableRetrieval\TabGNN\data\train\feta\generate_query.jsonl"
-    default_output = r"c:\Users\user\Desktop\TableRetrieval\TabGNN\data\train\feta\embeddings_query.json"
+    default_input = r"data\train\feta\generate_query.jsonl"
+    default_output = r"data\train\feta\embeddings_query.jsonl"
     transform_queries_to_embeddings(default_input, default_output)
 
 
