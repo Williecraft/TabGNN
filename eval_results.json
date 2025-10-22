@@ -1,0 +1,17 @@
+{
+  "evaluated": 1000,
+  "hit@1": 0.222,
+  "hit@5": 0.464,
+  "hit@10": 0.591,
+  "mrr": 0.3412490611291023,
+  "mean_rank": 21.676,
+  "seconds": 110.18631172180176,
+  "config": {
+    "QUERY_PATH": "c:\\Users\\user\\Desktop\\TabGNN\\table\\train\\feta\\query.jsonl",
+    "LIMIT": 1000,
+    "EMBED_MODEL": "distiluse-base-multilingual-cased-v2",
+    "EMBED_DEVICE": "cpu",
+    "EMBED_BATCH": 64,
+    "FORCE_SEMANTIC": true
+  }
+}
