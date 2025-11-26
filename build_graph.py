@@ -1,274 +1,232 @@
-import os,io,csv,json,re,hashlib,math
-import torch,torch.nn.functional as F
-from torch_geometric.data import HeteroData
-import numpy as np
-try:
-    from sentence_transformers import SentenceTransformer
-except Exception:
-    SentenceTransformer=None
+import torch
+import torch.nn.functional as F
+from torch_geometric.data import HeteroData, DataLoader
+from torch_geometric.nn import RGCNConv
+from sentence_transformers import SentenceTransformer
+import random
+import json
+import os 
+import csv 
+from tqdm import tqdm 
 
-# ---------------- Utils ----------------
+# 異質圖教學(HeteroData): https://zhuanlan.zhihu.com/p/659971512
 
-def load_jsonl(p):
-    with io.open(p,'r',encoding='utf-8') as f:
-        for l in f:
-            l=l.strip()
-            if l: yield json.loads(l)
+# 讀資料庫
+tables = []
+TABLE_JSONL_PATH = 'table/test/feta/table.jsonl' 
+with open(TABLE_JSONL_PATH, 'r', encoding='utf-8') as f:
+    for line in f:
+        temp = json.loads(line)
+        tables.append(temp)
+print(f"讀取完成，共 {len(tables)} 張表格。")
 
+# 適用純英文轉句向量，如果有多種語言用 distiluse-base-multilingual-cased-v2
+# embedder = SentenceTransformer('sentence-transformers/BGE-M3', device='cuda')
+embedder = SentenceTransformer('BAAI/bge-m3', device='cuda')
+# embedder = SentenceTransformer('BGE-M3', device='cuda')
 
-def parse_csv_line(s):
-    return next(csv.reader([s]))
+data = HeteroData()
+print("\n=== 解析 JSONL ===")
 
+table_docs = [] # 表格的完整文字描述(後面會拼起來)
+column_docs = []# 欄位的名稱、所屬表格和前 10 個值。
+page_docs = [] # 維基百科頁面的標題
 
-class Embedder:
-    def __init__(self):
-        self.force = bool(int(os.environ.get('FORCE_SEMANTIC','0')))
-        self.device = os.environ.get('EMBED_DEVICE','cuda' if torch.cuda.is_available() else 'cpu')
-        self.bs = int(os.environ.get('EMBED_BATCH','64'))
-        self.ok=False
-        if SentenceTransformer:
-            try:
-                model_name = os.environ.get('EMBED_MODEL','distiluse-base-multilingual-cased-v2')
-                self.m=SentenceTransformer(model_name, device=self.device)
-                self.ok=True
-                print(f'使用語意模型: {model_name} | device={self.device} | batch={self.bs}')
-            except Exception as e:
-                self.m=None
-                if self.force:
-                    raise RuntimeError(f'無法載入語意模型：{e}')
-    def encode(self,t):
-        if self.ok:
-            if isinstance(t,(list,tuple)):
-                return self.m.encode(list(t), batch_size=self.bs, convert_to_numpy=True, show_progress_bar=False)
-            return self.m.encode(t, batch_size=self.bs, convert_to_numpy=True, show_progress_bar=False)
-        if self.force:
-            raise RuntimeError('未載入語意模型（FORCE_SEMANTIC=1）')
-        # hash fallback 512-d
-        v=np.zeros(512,dtype=np.float32)
-        if isinstance(t,list): t=' '.join(map(str,t))
-        for w in re.findall(r"\w+",str(t).lower()):
-            h=int(hashlib.md5(w.encode()).hexdigest(),16)%512
-            v[h]+=1.0
-        n=np.linalg.norm(v)
-        return (v/n if n>0 else v)
+# 索引映射(id推回索引)
+table_id_to_idx = {} 
+column_global_id_to_idx = {} 
+page_title_to_idx = {}
 
+# 結構邊
+edge_table_to_col_src = [] # table -> col 的起點
+edge_table_to_col_dst = []  # table -> col 的終點
+edge_table_to_page_src = [] # talbe -> page 的起點
+edge_table_to_page_dst = [] #table -> page 的終點
 
-# ---------------- Core build ----------------
+# 儲存節點的原始資料
+meta_table_ids = []
+meta_page_titles = []
+meta_col_global_ids = []
 
-def build_graph(table_jsonl_path,topk_t=10,topk_c=3,topk_name=5,topk_dist=5,sim_chunk=None,log_every=None):
-    """
-    構建異質圖（支援分批相似度計算）。
-    - 分批計算 table 的 top-K 相似邊，以避免 O(N^2) 內存爆炸
-    - 欄位內容相似度：保留表內 all-pairs；全局 top-K 省略以提升效率（大規模數據）
-    """
-    if sim_chunk is None:
-        sim_chunk=int(os.environ.get('SIM_CHUNK','512'))
-    if log_every is None:
-        log_every=int(os.environ.get('LOG_EVERY_CHUNK','1'))
-    emb=Embedder()
+# 新增：記錄每個 page 下有哪些 table idx（用於 same_page 連邊）
+page_to_table_idxs = {}
 
-    # 讀取所有表
-    tables=[]
-    mt=int(os.environ.get('MAX_TABLES','0'))
-    for i,o in enumerate(load_jsonl(table_jsonl_path),1):
-        tables.append(o)
-        if i%100==0: print(f"已處理 {i} 張表格...")
-        if mt>0 and i>=mt:
-            print(f"已達 MAX_TABLES 限制: {mt}")
-            break
-    tids=[t.get('id',str(i)) for i,t in enumerate(tables)]
-    t2i={tid:i for i,tid in enumerate(tids)}
-    sheets=[str(t.get('sheet_name','')) for t in tables]
-
-    # 生成表與欄位特徵（批次嵌入）
-    t_feats=[]; c_feats=[]; name_embs=[]; c_tbl_idx=[]; c_hist=[]; c_is_num=[]
-    t2cols={}; key2i={}
-
-    # 收集待嵌入文本
-    t_texts=[]
-    col_entries=[]  # {key, ti, c_txt, n_txt}
-    for ti,t in enumerate(tables):
-        sheet=sheets[ti]
-        hdr=t.get('header',[])
-        hdr=parse_csv_line(hdr[0]) if hdr else []
-        inst=[parse_csv_line(r) for r in t.get('instances',[])]
-        parts=[sheet]+hdr
-        for r in inst[:10]: parts+=r
-        t_texts.append(', '.join(map(lambda x:str(x).strip(),parts)))
-        cs=[]
-        for j,cn in enumerate(hdr):
-            vals=[]
-            for r in inst[:10]:
-                if j<len(r): vals.append(str(r[j]))
-            # 數值分布統計
-            def isf(s):
-                try: float(s); return True
-                except: return False
-            nums=[float(v) for v in vals if isf(v)]
-            is_num=1.0 if nums else 0.0
-            c_is_num.append(is_num==1.0)
-            if nums:
-                arr=np.array(nums,dtype=np.float32)
-                b=16; mn=float(arr.min()); mx=float(arr.max())
-                cnt=np.zeros(b,dtype=np.float32)
-                if mx==mn: cnt[0]=float(arr.size)
-                else:
-                    rng=mx-mn
-                    for x in arr:
-                        k=int((float(x)-mn)/rng*b); k=min(max(k,0),b-1); cnt[k]+=1
-                if cnt.sum()>0: cnt=cnt/cnt.sum()
-                c_hist.append(torch.tensor(cnt,dtype=torch.float))
-            else: c_hist.append(None)
-            key=f"{tids[ti]}::{j}::{cn}"
-            cs.append(key)
-            col_entries.append({'key':key,'ti':ti,'c_txt':', '.join([str(cn)]+vals),'n_txt':str(cn)})
-        t2cols[tids[ti]]=cs
-
-    # 批次語意嵌入
-    print('開始批次嵌入特徵...')
-    t_vecs=emb.encode(t_texts) if t_texts else []
-    c_vecs=emb.encode([e['c_txt'] for e in col_entries]) if col_entries else []
-    n_vecs=emb.encode([e['n_txt'] for e in col_entries]) if col_entries else []
-
-    # 建立索引與特徵張量
-    for idx,e in enumerate(col_entries):
-        key2i[e['key']]=idx
-        c_tbl_idx.append(e['ti'])
-        c_feats.append(torch.tensor(c_vecs[idx],dtype=torch.float))
-        name_embs.append(torch.tensor(n_vecs[idx],dtype=torch.float))
-    t_feats=[torch.tensor(v,dtype=torch.float) for v in (t_vecs if t_vecs is not None else [])]
-
-    d=HeteroData()
-    d['table'].x=torch.stack(t_feats) if t_feats else torch.empty((0,512))
-    d['column'].x=torch.stack(c_feats) if c_feats else torch.empty((0,512))
-    d['table'].table_ids=tids; d['table'].sheet_names=sheets
-    d['table'].table_id_to_idx=t2i; d['table'].table_idx_to_id={i:tid for tid,i in t2i.items()}
-
-    # has_column / rev_has_column
-    ts,td=[],[]
-    for tid,cks in t2cols.items():
-        for ck in cks:
-            ts.append(t2i[tid]); td.append(key2i[ck])
-    if ts:
-        d['table','has_column','column'].edge_index=torch.tensor([ts,td],dtype=torch.long)
-        d['column','rev_has_column','table'].edge_index=torch.tensor([td,ts],dtype=torch.long)
-
-    # Normalize
-    with torch.no_grad():
-        xt=F.normalize(d['table'].x,p=2,dim=1) if d['table'].x.size(0)>0 else d['table'].x
-        xc=F.normalize(d['column'].x,p=2,dim=1) if d['column'].x.size(0)>0 else d['column'].x
-
-    # -------- 分批計算 table sim top-K --------
-    print('開始分批計算表格相似度邊...')
-    N=xt.size(0)
-    sim_src,sim_dst,sim_w=[],[],[]
-    if N>0:
-        # 以 chunk 行塊與整體做乘法，提取每行 top-K
-        for s in range(0,N,sim_chunk):
-            e=min(s+sim_chunk,N)
-            block=xt[s:e]  # [B,512]
-            # [B,N]
-            sims=torch.matmul(block,xt.T)
-            # 排除自身
-            idx=torch.arange(s,e)
-            sims[torch.arange(e-s),idx]=float('-inf')
-            top=torch.topk(sims,k=min(topk_t,N),largest=True)
-            top_idx=top.indices.cpu().tolist()
-            top_val=top.values.cpu().tolist()
-            for row,i0 in enumerate(range(s,e)):
-                for j,w in zip(top_idx[row],top_val[row]):
-                    sim_src.append(i0); sim_dst.append(j); sim_w.append(max(0.0,float(w)))
-            if (s//sim_chunk)%10==0:
-                print(f"表格相似度進度: {e}/{N}")
-    if sim_src:
-        d['table','sim','table'].edge_index=torch.tensor([sim_src,sim_dst],dtype=torch.long)
-        d['table','sim','table'].edge_weight=torch.tensor(sim_w,dtype=torch.float)
-        print(f"表格相似邊數: {len(sim_src)}")
-
-    # -------- 欄位內容相似度：僅表內 all-pairs + 近鄰近似（可選） --------
-    print('生成欄位內容相似度（表內 all-pairs）...')
-    cs,cd=[],[]
-    for tid,cks in t2cols.items():
-        idx=[key2i[k] for k in cks]
-        for a in idx:
-            for b in idx:
-                if a!=b:
-                    cs.append(a); cd.append(b)
-    if cs:
-        d['column','col_sim','column'].edge_index=torch.tensor([cs,cd],dtype=torch.long)
-
-    # -------- 欄位名稱相似度（跨表） --------
-    print('計算欄位名稱相似度（跨表）...')
-    ns,nd=[],[]
-    if name_embs:
-        nm=torch.stack([F.normalize(e,p=2,dim=0) for e in name_embs])
-        M=nm.size(0)
-        # 分批行塊以避免 O(M^2) 內存
-        for s in range(0,M,sim_chunk):
-            e=min(s+sim_chunk,M)
-            block=nm[s:e]  # [B,512]
-            sims=torch.matmul(block,nm.T)  # [B,M]
-            idx=torch.arange(s,e)
-            sims[torch.arange(e-s),idx]=float('-inf')
-            top=torch.topk(sims,k=min(topk_name,M),largest=True)
-            top_idx=top.indices.cpu().tolist()
-            for row,i0 in enumerate(range(s,e)):
-                for j in top_idx[row]:
-                    if c_tbl_idx[i0]!=c_tbl_idx[j]:
-                        ns.append(i0); nd.append(j)
-            if ((s//sim_chunk) % log_every)==0 or e==M:
-                print(f"欄位名稱相似度進度: {e}/{M} (chunk {s//sim_chunk + 1}/{math.ceil(M/sim_chunk)})")
-    if ns:
-        d['column','name_sim','column'].edge_index=torch.tensor([ns,nd],dtype=torch.long)
-        print(f"欄位名稱相似邊數: {len(ns)}")
-
-    # -------- 數值分布相似度（跨表） --------
-    print('計算數值分布相似度（跨表）...')
-    ds,dd=[],[]
-    idxs=[i for i,h in enumerate(c_hist) if h is not None]
-    if idxs:
-        H=torch.stack([F.normalize(c_hist[i],p=2,dim=0) for i in idxs])
-        M=H.size(0)
-        for s in range(0,M,sim_chunk):
-            e=min(s+sim_chunk,M)
-            block=H[s:e]  # [B,16]
-            sims=torch.matmul(block,H.T)  # [B,M]
-            idx=torch.arange(s,e)
-            sims[torch.arange(e-s),idx]=float('-inf')
-            top=torch.topk(sims,k=min(topk_dist,M),largest=True)
-            top_idx=top.indices.cpu().tolist()
-            for row,k0 in enumerate(range(s,e)):
-                i=idxs[k0]
-                for jj in top_idx[row]:
-                    j=idxs[jj]
-                    if c_tbl_idx[i]!=c_tbl_idx[j]:
-                        ds.append(i); dd.append(j)
-            if ((s//sim_chunk) % log_every)==0 or e==M:
-                print(f"數值分布相似度進度: {e}/{M} (chunk {s//sim_chunk + 1}/{math.ceil(M/sim_chunk)})")
-    if ds:
-        d['column','dist_sim','column'].edge_index=torch.tensor([ds,dd],dtype=torch.long)
-        print(f"數值分布相似邊數: {len(ds)}")
-
-    return d
-
-
-def main():
-    base=os.path.dirname(os.path.abspath(__file__))
-    tj=os.path.join(base,'table','train','feta','table.jsonl')
-    tk=int(os.environ.get('TOPK_TABLE_SIM','10'))
-    kc=int(os.environ.get('TOPK_COL_SIM','3'))
-    kn=int(os.environ.get('TOPK_COL_NAME_SIM','5'))
-    kd=int(os.environ.get('TOPK_COL_DIST_SIM','5'))
-    ch=int(os.environ.get('SIM_CHUNK','512'))
-    le=int(os.environ.get('LOG_EVERY_CHUNK','1'))
+for item in tqdm(tables, desc="解析表格"):
     try:
-        print('正在讀取表格資料...')
-        g=build_graph(tj,tk,kc,kn,kd,sim_chunk=ch,log_every=le)
-        out=os.path.join(base,'graph_cache.pt')
-        torch.save(g,out)
-        print(f'圖構建完成，保存至 {out}')
-    except Exception as e:
-        print('構圖失敗:',e)
+        
+        # header 原本是字串，切成一個list
+        if not item.get('header') or not item['header'][0]:
+            continue 
+        header_str = item['header'][0]
+        header_list = next(csv.reader([header_str])) 
 
-if __name__=='__main__':
-    main()
+        # instance 同理
+        instance_rows = []
+        for row_str in item.get('instances', []):
+            instance_rows.append(next(csv.reader([row_str])))
+
+        table_id = item['id']
+        # 資料庫中好像有重複的
+        if table_id in table_id_to_idx:
+            continue 
+        
+        # 賦予這張表一個新的節點索引 (0, 1, 2...)
+        current_table_idx = len(table_docs)
+        table_id_to_idx[table_id] = current_table_idx
+        meta_table_ids.append(table_id)
+
+        # Page
+        page_title = item.get('metadata', {}).get('table_page_title')
+        if not page_title:
+            page_title = f"__UNKNOWN_PAGE_{table_id}__" 
+        
+        if page_title not in page_title_to_idx:
+            # 如果是新的 Page 就登記到page_docs
+            current_page_idx = len(page_docs)
+            page_title_to_idx[page_title] = current_page_idx
+            page_docs.append(page_title) 
+            meta_page_titles.append(page_title)
+        else:
+            # 舊的就找出索引
+            current_page_idx = page_title_to_idx[page_title]
+
+        # 登記 table -> page 的結構邊 ('Table', 'comes_from', 'Page') 
+        edge_table_to_page_src.append(current_table_idx)
+        edge_table_to_page_dst.append(current_page_idx)
+
+        # 同步記錄 page -> table idx 列表（後面用來建立 same_page edges）
+        if page_title not in page_to_table_idxs:
+            page_to_table_idxs[page_title] = []
+        page_to_table_idxs[page_title].append(current_table_idx)
+
+        # Table 的簡述
+        table_doc_parts = [
+            f"Page: {page_title}",
+            f"Sheet: {item.get('sheet_name', '')}",
+            f"Section: {item.get('metadata', {}).get('table_section_title', '')}",
+            f"Columns: {', '.join(header_list)}",
+            f"Data: {'; '.join([', '.join(row) for row in instance_rows[:5]])}"
+        ]
+        table_docs.append(" ".join(filter(None, table_doc_parts)))
+
+        for col_idx, col_name in enumerate(header_list):
+            # 建立一個全局唯一的欄位 ID
+            col_global_id = f"{table_id}::{col_name}::{col_idx}"
+            if col_global_id in column_global_id_to_idx:
+                continue
+            
+            # 賦予這個欄位一個新的節點索引
+            current_col_idx = len(column_docs)
+            column_global_id_to_idx[col_global_id] = current_col_idx
+            meta_col_global_ids.append(col_global_id)
+
+            # ('Table', 'has_column', 'Column')
+            # (Table 節點索引) -> (Column 節點索引)
+            edge_table_to_col_src.append(current_table_idx)
+            edge_table_to_col_dst.append(current_col_idx)
+
+            # Column 的簡述
+            sample_values = [row[col_idx] for row in instance_rows[:10] if len(row) > col_idx and row[col_idx].strip()]
+            col_doc_parts = [
+                f"Column: {col_name}",
+                f"Belongs to table: {page_title} - {item.get('sheet_name', '')}",
+                f"Values: {', '.join(sample_values)}"
+            ]
+            column_docs.append(" ".join(filter(None, col_doc_parts)))
+    
+    except Exception as e:
+        print(f"處理表格 {item.get('id')} 時發生錯誤: {e}")
+        continue
+
+print(f"\n--- 建圖 (共 {len(table_docs)} 表, {len(column_docs)} 欄, {len(page_docs)} 頁) ---")
+
+# 使用 embedder 將所有簡述轉為向量
+print("開始 embeddings（table, column, page）...")
+data['table'].x = torch.tensor(embedder.encode(table_docs, show_progress_bar=True), dtype=torch.float)
+data['column'].x = torch.tensor(embedder.encode(column_docs, show_progress_bar=True), dtype=torch.float)
+data['page'].x = torch.tensor(embedder.encode(page_docs, show_progress_bar=True), dtype=torch.float)
+print("embeddings 完成。")
+
+# 儲存原始資料
+data['table'].id = meta_table_ids
+data['column'].global_id = meta_col_global_ids
+data['page'].title = meta_page_titles
+
+# 將所有 ID-to-Index 映射集中儲存到頂層字典
+data.metadata_maps = {
+    'table_id_to_idx': table_id_to_idx,
+    'column_global_id_to_idx': column_global_id_to_idx,
+    'page_title_to_idx': page_title_to_idx
+}
+
+# 儲存結構邊
+data['table', 'has_column', 'column'].edge_index = torch.tensor([edge_table_to_col_src, edge_table_to_col_dst], dtype=torch.long)
+data['table', 'comes_from', 'page'].edge_index = torch.tensor([edge_table_to_page_src, edge_table_to_page_dst], dtype=torch.long)
+
+# 建立同一 Page 下的 Table 之間的 strong edges (('table','same_page','table'))
+print("正在建立同一 page 的 table 連邊 (same_page)...")
+same_src = []
+same_dst = []
+for page_title, t_idxs in page_to_table_idxs.items():
+    if len(t_idxs) <= 1:
+        continue
+    # 兩兩配對，加入雙向邊
+    for i in range(len(t_idxs)):
+        for j in range(i+1, len(t_idxs)):
+            a = t_idxs[i]
+            b = t_idxs[j]
+            same_src.append(a)
+            same_dst.append(b)
+            same_src.append(b)  # 加入反向
+            same_dst.append(a)
+
+if same_src:
+    data['table', 'same_page', 'table'].edge_index = torch.tensor([same_src, same_dst], dtype=torch.long)
+    print(f"建立 same_page edges: {len(same_src)} 條（含反向）")
+else:
+    print("沒有發現同一 page 下有多於 1 張 table，未建立 same_page edges。")
+
+# 建立反向邊
+print("正在建立反向邊 (to_homogeneous -> to_heterogeneous)...")
+data = data.to_homogeneous().to_heterogeneous()
+
+# 利用相似度來接表格（table <-> table by embedding）
+print("計算 'table' <-> 'table' 相似度邊...")
+K_table = 5 # 每張表挑 top@5 連結
+xt = F.normalize(data['table'].x, p=2, dim=1) # 將向量化的table標準化
+sim_matrix = torch.matmul(xt, xt.T) # 計算 N x N 相似度矩陣
+sim_matrix.fill_diagonal_(float('-inf')) # 把對角線設為負無窮大以避開自己
+top_k_values, top_k_indices = torch.topk(sim_matrix, k=min(K_table, xt.size(0)-1), dim=1) # 找出 topk 個鄰居
+
+sim_src, sim_dst = [], []
+for i in range(xt.size(0)):
+    for j in top_k_indices[i]:
+        sim_src.append(i)
+        sim_dst.append(j.item())
+        
+data['table', 'similar_table', 'table'].edge_index = torch.tensor([sim_src, sim_dst], dtype=torch.long)
+
+print("計算 'column' <-> 'column' 相似度邊...")
+K_column = 5 # 每個欄位連接 5 個最像的
+xc = F.normalize(data['column'].x, p=2, dim=1)
+
+sim_matrix_c = torch.matmul(xc, xc.T)
+sim_matrix_c.fill_diagonal_(float('-inf'))
+top_k_values_c, top_k_indices_c = torch.topk(sim_matrix_c, k=min(K_column, xc.size(0)-1), dim=1)
+
+sim_src_c, sim_dst_c = [], []
+for i in range(xc.size(0)):
+    for j in top_k_indices_c[i]:
+        sim_src_c.append(i)
+        sim_dst_c.append(j.item())
+data['column', 'similar_content', 'column'].edge_index = torch.tensor([sim_src_c, sim_dst_c], dtype=torch.long)
+
+print("\n--- 圖構建完成！ ---")
+print("\n最終圖結構 (HeteroData):")
+print(data)
+
+# --- 儲存圖 ---
+OUTPUT_GRAPH_PATH = "graph.pt"
+print(f"\n將圖儲存至 {OUTPUT_GRAPH_PATH}...")
+torch.save(data, OUTPUT_GRAPH_PATH)
+print("完成！")
