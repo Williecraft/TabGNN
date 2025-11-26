@@ -11,12 +11,12 @@ BATCH_SIZE = 32
 DEVICE = "cuda"                    # "cuda", "cuda:0", 或 None
 TOP_KS = (1, 5, 10)
 
-REPORT_CSV = Path("similarity_eval_report.csv")   # Top-10 明細
-RANK_SUMMARY_CSV = Path("rank_summary.csv")       # 每筆 best_rank 摘要
+REPORT_CSV = Path("/user_data/TabGNN/results/similarity_eval_report.csv")   # Top-10 明細
+RANK_SUMMARY_CSV = Path("/user_data/TabGNN/results/rank_summary.csv")       # 每筆 best_rank 摘要
 # =================================
 
-GEN_PATH = Path(fr"data/{SOURCE}/generate_query.jsonl")
-GOLD_PATH = Path(fr"table/{SOURCE}/query.jsonl")
+GEN_PATH = Path("/user_data/TabGNN/data/test/feta/generate_query.jsonl")
+GOLD_PATH = Path("/user_data/TabGNN/data/table/test/feta/query.jsonl")
 
 def load_generate_queries(path: Path) -> List[Dict]:
     """

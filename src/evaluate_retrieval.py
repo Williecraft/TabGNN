@@ -241,9 +241,9 @@ def evaluate(query_file: str, model_path: str, graph_path: str, top_k: int = 10,
 
 def main():
     parser = argparse.ArgumentParser(description="批次評估檢索指標（Recall/MRR/MAP/NDCG/導出/度量選項）")
-    parser.add_argument("--query_file", type=str, default="/user_data/TabGNN/table/test/feta/query.jsonl")
-    parser.add_argument("--model_path", type=str, default="/user_data/TabGNN/diffusion_model_best.pt")
-    parser.add_argument("--graph_path", type=str, default="/user_data/TabGNN/graph.pt")
+    parser.add_argument("--query_file", type=str, default="/user_data/TabGNN/data/table/test/feta/query.jsonl")
+    parser.add_argument("--model_path", type=str, default="/user_data/TabGNN/checkpoints/diffusion_model_best.pt")
+    parser.add_argument("--graph_path", type=str, default="/user_data/TabGNN/data/processed/graph.pt")
     parser.add_argument("--top_k", type=int, default=10)
     parser.add_argument("--batch_size", type=int, default=64)
     parser.add_argument("--metric", type=str, default="cosine", choices=["cosine", "dot", "l2"])

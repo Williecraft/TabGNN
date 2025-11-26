@@ -3,7 +3,7 @@ import pandas as pd
 import csv
 
 SOURCE = "test/feta"
-TABLE_PATH = fr"table/{SOURCE}/table.jsonl"
+TABLE_PATH = "/user_data/TabGNN/data/table/test/feta/table.jsonl"
 i = 10
 
 with open(TABLE_PATH, "r", encoding="utf-8") as f:

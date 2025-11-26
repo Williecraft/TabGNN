@@ -159,8 +159,8 @@ def retrieve(query: str, top_k: int = 10, model_path: str = "diffusion_mode.pt",
 
 def main():
     
-    DEFAULT_MODEL_PATH = "diffusion_model.pt" 
-    DEFAULT_GRAPH_PATH = "graph.pt"
+    DEFAULT_MODEL_PATH = "/user_data/TabGNN/checkpoints/diffusion_model.pt" 
+    DEFAULT_GRAPH_PATH = "/user_data/TabGNN/data/processed/graph.pt"
     TOP_K = 10
 
     print("互動模式：輸入查詢（輸入 exit/quit 結束）")

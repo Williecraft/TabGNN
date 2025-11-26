@@ -13,7 +13,7 @@ from tqdm import tqdm
 
 # 讀資料庫
 tables = []
-TABLE_JSONL_PATH = 'table/test/feta/table.jsonl' 
+TABLE_JSONL_PATH = '/user_data/TabGNN/data/table/test/feta/table.jsonl' 
 with open(TABLE_JSONL_PATH, 'r', encoding='utf-8') as f:
     for line in f:
         temp = json.loads(line)
@@ -226,7 +226,7 @@ print("\n最終圖結構 (HeteroData):")
 print(data)
 
 # --- 儲存圖 ---
-OUTPUT_GRAPH_PATH = "graph.pt"
+OUTPUT_GRAPH_PATH = "/user_data/TabGNN/data/processed/graph.pt"
 print(f"\n將圖儲存至 {OUTPUT_GRAPH_PATH}...")
 torch.save(data, OUTPUT_GRAPH_PATH)
 print("完成！")

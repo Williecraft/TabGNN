@@ -8,8 +8,8 @@ import math
 
 SOURCE = "test/feta"
 
-TABLE_PATH = fr"table/{SOURCE}/table.jsonl"
-QUERY_PATH = fr"data/{SOURCE}/generate_query.jsonl"
+TABLE_PATH = "/user_data/TabGNN/data/table/test/feta/table.jsonl"
+QUERY_PATH = "/user_data/TabGNN/data/test/feta/generate_query.jsonl"
 MAX_RETRIES = 2  # LLM 輸出不合規時的重試次數
 FIX = True # 從頭開始檢查有沒有生成失敗的
 
@@ -76,24 +76,24 @@ if not os.path.exists(QUERY_PATH):
 with open(QUERY_PATH, "r", encoding="utf-8") as f:
     query_lines = [json.loads(line) for line in f.readlines()]
 
-with open("api_keys.json", "r", encoding="utf-8") as f:
+with open("/user_data/TabGNN/config/api_keys.json", "r", encoding="utf-8") as f:
     api_keys = json.load(f)
 
-with open("log.txt", "w", encoding="utf-8"): pass
+with open("/user_data/TabGNN/results/log.txt", "w", encoding="utf-8"): pass
 def write_log(text):
-    with open("log.txt", "a", encoding="utf-8") as f:
+    with open("/user_data/TabGNN/results/log.txt", "a", encoding="utf-8") as f:
         f.write(text+"\n"+"="*50+"\n")
 
-if not os.path.exists("progress.json"):
-    with open("progress.json", "w", encoding="utf-8") as f: 
+if not os.path.exists("/user_data/TabGNN/results/progress.json"):
+    with open("/user_data/TabGNN/results/progress.json", "w", encoding="utf-8") as f: 
         json.dump({}, f)
 
-with open("progress.json", "r", encoding="utf-8") as f:
+with open("/user_data/TabGNN/results/progress.json", "r", encoding="utf-8") as f:
     progress = json.load(f)
 
 if progress.get(SOURCE) is None:
     progress[SOURCE] = 0
-    with open("progress.json", "w", encoding="utf-8") as f:
+    with open("/user_data/TabGNN/results/progress.json", "w", encoding="utf-8") as f:
         json.dump(progress, f, ensure_ascii=False)
 
 def save_queries():
@@ -234,7 +234,7 @@ def main():
 
         if not FIX:
             progress[SOURCE] = i+1
-            with open("progress.json", "w", encoding="utf-8") as f:
+            with open("/user_data/TabGNN/results/progress.json", "w", encoding="utf-8") as f:
                 json.dump(progress, f, ensure_ascii=False, indent=4)
 
         print("\n" + "="*50 + "\n")

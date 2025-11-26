@@ -13,7 +13,7 @@ import numpy as np
 
 # ========= 可調變數 =========
 SOURCE = "test/feta"
-GEN_PATH = Path(fr"data/{SOURCE}/generate_query.jsonl")
+GEN_PATH = Path("/user_data/TabGNN/data/test/feta/generate_query.jsonl")
 
 MODEL_NAME = "BAAI/bge-m3"   # 若有多語需求可用：paraphrase-multilingual-MiniLM-L12-v2
 DEVICE = "cuda"                    # "cuda", "cuda:0", 或 None

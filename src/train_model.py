@@ -387,8 +387,8 @@ def main():
 
     # 基礎配置
     BASE_CONFIG = {
-        'GRAPH_FILE': "graph.pt",
-        'QUERY_FILE': os.path.join(os.path.dirname(os.path.abspath(__file__)), "data/test/feta/generate_query.jsonl"),
+        'GRAPH_FILE': "/user_data/TabGNN/data/processed/graph.pt",
+        'QUERY_FILE': "/user_data/TabGNN/data/test/feta/generate_query.jsonl",
         'MODEL_NAME': 'BAAI/bge-m3',
         'NUM_EPOCHS': 10,
         'WARMUP_EPOCHS': 2, # 縮短 warmup 以適應較短的 grid search epoch
@@ -416,7 +416,7 @@ def main():
     print(f"總共 {len(param_combinations)} 組參數組合待測試。")
 
     # 初始化結果 CSV
-    results_file = "grid_search_results.csv"
+    results_file = "/user_data/TabGNN/results/grid_search_results.csv"
     with open(results_file, mode='w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
         # 寫入標頭
@@ -524,7 +524,7 @@ def main():
 
     # 儲存最佳模型
     if best_model_state is not None:
-        save_path = "diffusion_model_best.pt"
+        save_path = "/user_data/TabGNN/checkpoints/diffusion_model_best.pt"
         save_data = {
             'model_state_dict': best_model_state,
             'hps': best_params,
