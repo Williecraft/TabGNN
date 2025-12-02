@@ -7,17 +7,29 @@ import numpy as np
 SOURCE = "test/feta"
 FILENAME = "query.jsonl"
 
-MODEL_NAME = "BAAI/bge-m3"  
+MODEL_NAME = "BAAI/bge-m3"
 BATCH_SIZE = 32
 DEVICE = "cuda"                    # "cuda", "cuda:0", 或 None
 TOP_KS = (1, 5, 10)
 
 REPORT_CSV = Path("/user_data/TabGNN/results/similarity_eval_report.csv")   # Top-10 明細
 RANK_SUMMARY_CSV = Path("/user_data/TabGNN/results/rank_summary.csv")       # 每筆 best_rank 摘要
+
+# ---- Milvus 相關設定 ----
+# Lite 模式不再需要 host/port，但先保留不使用
+MILVUS_HOST = "127.0.0.1"
+MILVUS_PORT = "19530"
+MILVUS_COLLECTION = "feta_query_corpus"
+
+MILVUS_METRIC_TYPE = "IP"  # 因為我們用 normalize_embeddings=True，點積 = cosine，相似度越大越好
+MILVUS_INDEX_TYPE = "IVF_FLAT"
+MILVUS_INDEX_NLIST = 1024
+MILVUS_SEARCH_NPROBE = 16
 # =================================
 
 GEN_PATH = Path(f"/user_data/TabGNN/data/generated/{SOURCE}/{FILENAME}")
 GOLD_PATH = Path(f"/user_data/TabGNN/data/table/{SOURCE}/query.jsonl")
+
 
 def load_generate_queries(path: Path) -> List[Dict]:
     """
@@ -40,6 +52,7 @@ def load_generate_queries(path: Path) -> List[Dict]:
                     items.append({"table_id": int(table_id), "question": q})
     return items
 
+
 def load_gold_queries(path: Path) -> List[Dict]:
     """
     載入 query.jsonl 為：
@@ -56,6 +69,7 @@ def load_gold_queries(path: Path) -> List[Dict]:
             if q and ("id" in obj):
                 items.append({"id": int(obj["id"]), "question": q})
     return items
+
 
 def build_raw_table_id_set(path: Path) -> set:
     """
@@ -74,9 +88,10 @@ def build_raw_table_id_set(path: Path) -> set:
                 continue
             try:
                 raw_ids.add(int(str(tid).strip()))
-            except:
+            except Exception:
                 pass
     return raw_ids
+
 
 def embed_texts(model_name: str, texts: list, batch_size: int = 64, device: str = None) -> np.ndarray:
     """
@@ -92,6 +107,133 @@ def embed_texts(model_name: str, texts: list, batch_size: int = 64, device: str 
         normalize_embeddings=True,
     )
     return embs
+
+
+# =============== Milvus 相關函式 ===============
+
+def init_milvus_collection(dim: int, num_entities: int):
+    """
+    使用 Milvus Lite（embedded）建立 / 重建 collection，schema:
+    - pk: INT64, primary key, 對應到 corpus 的 row index
+    - table_id: INT64, 對應到該向量所屬的 table id
+    - emb: FLOAT_VECTOR[dim]
+
+    ★ 不再連 127.0.0.1:19530，而是直接用本機檔案 milvus_eval.db。
+    """
+    from pymilvus import (
+        connections,
+        FieldSchema,
+        CollectionSchema,
+        DataType,
+        Collection,
+        utility,
+    )
+
+    # ★ 關鍵：使用 Lite 模式，在當前目錄建立一個 milvus_eval.db 檔案
+    connections.connect(
+        alias="default",
+        uri="milvus_eval.db",  # 可以改成絕對路徑，例如 "/user_data/TabGNN/milvus_eval.db"
+    )
+
+    # 如果 collection 已存在就直接刪除重建（避免殘留舊資料）
+    if utility.has_collection(MILVUS_COLLECTION):
+        utility.drop_collection(MILVUS_COLLECTION)
+
+    # 定義 schema
+    fields = [
+        FieldSchema(
+            name="pk",
+            dtype=DataType.INT64,
+            is_primary=True,
+            auto_id=False,
+        ),
+        FieldSchema(
+            name="table_id",
+            dtype=DataType.INT64,
+            is_primary=False,
+        ),
+        FieldSchema(
+            name="emb",
+            dtype=DataType.FLOAT_VECTOR,
+            dim=dim,
+        ),
+    ]
+    schema = CollectionSchema(
+        fields=fields,
+        description=f"FETA generate_query corpus, {num_entities} entities.",
+    )
+
+    collection = Collection(name=MILVUS_COLLECTION, schema=schema)
+
+    # 建 index（先不 load，等 insert 後再 load）
+    index_params = {
+        "metric_type": MILVUS_METRIC_TYPE,
+        "index_type": MILVUS_INDEX_TYPE,
+        "params": {
+            "nlist": MILVUS_INDEX_NLIST,
+        },
+    }
+    collection.create_index(field_name="emb", index_params=index_params)
+
+    return collection
+
+
+def insert_corpus_to_milvus(collection, corpus_vecs: np.ndarray, corpus_table_ids: np.ndarray):
+    """
+    把語料庫向量與對應 table_id 塞進 Milvus。
+    pk = 語料庫 row index。
+    """
+    from pymilvus import Collection
+
+    assert isinstance(collection, Collection)
+
+    num = len(corpus_vecs)
+    print(f"Milvus: 插入語料庫向量，共 {num} 筆...")
+
+    pks = list(range(num))
+    table_ids = corpus_table_ids.tolist()
+    vectors = corpus_vecs.tolist()
+
+    data = [pks, table_ids, vectors]
+    collection.insert(data)
+    collection.flush()
+
+    # load 進記憶體，後面才能 search
+    collection.load()
+
+    print("Milvus: 插入完成並已 load collection。")
+
+
+def milvus_search(collection, query_vec: np.ndarray, limit: int):
+    """
+    對單一 query_vec 做 Milvus search。
+    回傳 hits (list of hits)，每個 hit 有 .id (pk) 和 .distance (相似度或距離)。
+    """
+    search_params = {
+        "metric_type": MILVUS_METRIC_TYPE,
+        "params": {
+            "nprobe": MILVUS_SEARCH_NPROBE,
+        },
+    }
+
+    # Milvus 接受的是 list[list[float]]，代表多筆 query
+    data = [query_vec.tolist()]
+
+    # 注意：limit 不可以超過 collection 中的 entity 數
+    results = collection.search(
+        data=data,
+        anns_field="emb",
+        param=search_params,
+        limit=limit,
+        output_fields=["table_id"],  # 若之後想要直接從 entity 拿 table_id 可用
+    )
+
+    # results 是 list[Hits]；我們只有一個 query，所以拿 results[0]
+    return results[0]
+
+
+# =============================================
+
 
 def main():
     # 基本檢查
@@ -116,12 +258,21 @@ def main():
     print(f"語料庫問題數（gen 展開）: {len(corpus_questions)}")
     print(f"查詢問題數（gold）     : {len(gold_items)}")
 
-    print(f"\n載入/產生向量（模型：{MODEL_NAME}）...")
     if len(corpus_questions) == 0:
         print("gen 展開後沒有任何問題（questions 全為空）— 無法評估。")
         return
 
+    print(f"\n載入/產生向量（模型：{MODEL_NAME}）...")
     corpus_vecs = embed_texts(MODEL_NAME, corpus_questions, batch_size=BATCH_SIZE, device=DEVICE)
+
+    # ---- 建立並填入 Milvus ----
+    dim = corpus_vecs.shape[1]
+    num_corpus = len(corpus_vecs)
+
+    print(f"\n初始化 Milvus collection（dim={dim}, num={num_corpus}）...")
+    from pymilvus import Collection  # 為了型別提示
+    collection = init_milvus_collection(dim=dim, num_entities=num_corpus)
+    insert_corpus_to_milvus(collection, corpus_vecs, corpus_table_ids)
 
     # 進度條
     try:
@@ -137,8 +288,8 @@ def main():
 
     # 用於平均 rank 的統計
     per_query_best_rank = []  # 存 int 或 None（NA）
-    num_with_rank = 0         # 有可計算 rank 的筆數（corpus 中存在該 table_id 的 query）
-    sum_rank_r = 0              # rank 總和
+    num_with_rank = 0         # 有可計算 rank 的筆數
+    sum_rank_r = 0.0          # 1/rank 的總和（用於 MRR）
 
     # gold 一次 encode
     gold_questions = [x["question"] for x in gold_items]
@@ -149,7 +300,7 @@ def main():
     REPORT_CSV.parent.mkdir(parents=True, exist_ok=True)
     RANK_SUMMARY_CSV.parent.mkdir(parents=True, exist_ok=True)
 
-    print("\n評估中（gold 作查詢；Top-K 是否含相同 id 的 gen.table_id；並計算 best_rank）...")
+    print("\n評估中（gold 作查詢；Milvus Top-K 是否含相同 id 的 gen.table_id；並計算 best_rank）...")
     with REPORT_CSV.open("w", encoding="utf-8", newline="") as fp_detail, \
          RANK_SUMMARY_CSV.open("w", encoding="utf-8", newline="") as fp_rank:
         writer_detail = csv.writer(fp_detail)
@@ -159,56 +310,69 @@ def main():
         writer_rank.writerow(["gold_id", "gold_question", "best_rank"])  # best_rank 可為 NA
 
         max_k = max(max(ks), 10)  # 至少 Top-10 便於檢查
-        N = len(corpus_vecs)
+        N = num_corpus
+
+        # 為了讓 best_rank 和原本版本意義相近，
+        # 這裡直接把 limit 設成 N，等於用 Milvus 排出全量排序。
+        # 如果 N 很大，可以改成較小的 limit（例如 1000）做近似。
+        full_limit = N
 
         for (gold_obj, qvec) in progress(zip(gold_items, gold_vecs), total=len(gold_items)):
             gold_id = gold_obj["id"]
 
             # 若此 gold_id 不在 gen 的原始 table_id 集合（不論有無 questions），略過（不列入 evaluated）
             if gold_id not in raw_table_id_set:
-                # print(f"跳過 gold_id={gold_id}（gen 尚未產生此表）。")
                 per_query_best_rank.append(None)
                 writer_rank.writerow([gold_id, gold_obj["question"], "NA"])
                 continue
 
             evaluated += 1
-            sims = np.dot(corpus_vecs, qvec)  # (N,)
 
-            # ---- 計算 best_rank（即使超過 Top-K）----
-            mask_same_id = (corpus_table_ids == gold_id)
-            if np.any(mask_same_id):
-                max_sim_same = np.max(sims[mask_same_id])
-                # 名次 = 1 + 比它更大的相似度數量（處理並列時給最好的名次）
-                better = int(np.sum(sims > max_sim_same))
-                best_rank = better + 1
+            # ---- Milvus search: 取全量排序，用來計算 best_rank 以及 Top-K ----
+            hits = milvus_search(collection, qvec, limit=full_limit)
+            if len(hits) == 0:
+                # 沒找到任何東西（理論上不會發生），當作 NA
+                per_query_best_rank.append(None)
+                writer_rank.writerow([gold_id, gold_obj["question"], "NA"])
+                continue
+
+            # 先把所有 hits 的 table_id 拉出來（依排序）
+            # pk = hit.id 對應到 corpus 的 row index
+            all_table_ids = [int(corpus_table_ids[hit.id]) for hit in hits]
+
+            # ---- best_rank = 第一個 table_id == gold_id 的名次（1-based）----
+            best_rank = None
+            for idx, tid in enumerate(all_table_ids, start=1):
+                if tid == gold_id:
+                    best_rank = idx
+                    break
+
+            if best_rank is not None:
                 per_query_best_rank.append(best_rank)
                 num_with_rank += 1
-                sum_rank_r += 1/best_rank
+                sum_rank_r += 1.0 / best_rank
                 writer_rank.writerow([gold_id, gold_obj["question"], best_rank])
             else:
-                # gen 有這個 id（raw 中存在），但 corpus（展開）沒有任何該 id 的問題 → 無法算 rank
                 per_query_best_rank.append(None)
                 writer_rank.writerow([gold_id, gold_obj["question"], "NA"])
 
-            # ---- Top-K 明細（原本邏輯）----
-            m = min(max_k, N)
-            top_idx = np.argpartition(-sims, kth=m-1)[:m]
-            top_idx = top_idx[np.argsort(-sims[top_idx])]
-            top_table_ids = corpus_table_ids[top_idx]
-
+            # ---- Top-K Recall 計算（只看前 max_k）----
+            top_table_ids = all_table_ids[:max_k]
             for k in ks:
                 if gold_id in top_table_ids[:k]:
                     hit_counts[k] += 1
 
-            out_m = min(10, len(top_idx))
-            for rank, idx in enumerate(top_idx[:out_m], start=1):
+            # ---- Top-10 明細輸出 ----
+            out_m = min(10, len(hits))
+            for rank, hit in enumerate(hits[:out_m], start=1):
+                row_idx = hit.id
                 writer_detail.writerow([
                     gold_id,
                     gold_obj["question"],
                     rank,
-                    int(corpus_table_ids[idx]),
-                    corpus_questions_text[idx],
-                    float(sims[idx]),
+                    int(corpus_table_ids[row_idx]),
+                    corpus_questions_text[row_idx],
+                    float(hit.distance),  # IP 的話可視為「相似度」
                 ])
 
     # ----- 輸出 Recall 與平均 rank -----
@@ -222,13 +386,14 @@ def main():
         print(f"Recall@{k}: {hit_counts[k]}/{evaluated} = {r:.4f}")
 
     if num_with_rank > 0:
-        mrr_hit = sum_rank_r / num_with_rank
-        mrr_overall = sum_rank_r / evaluated
+        mrr_hit = sum_rank_r / num_with_rank      # 只對有命中的樣本做平均
+        mrr_overall = sum_rank_r / evaluated      # 把沒命中的也算進母數
         print(f"\nMRR (Hits)\t：{mrr_hit:.4f}"
               f"\nMRR (overall)\t：{mrr_overall:.4f}"
               f"\n(樣本數 {num_with_rank} / 評估 {evaluated})")
     else:
         print("\nMRR：無法計算（所有可評估 gold 在 corpus 中都沒有對應 id 的生成 query）")
+
 
 if __name__ == "__main__":
     main()

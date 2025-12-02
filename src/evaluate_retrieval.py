@@ -8,6 +8,7 @@ import torch.nn.functional as F
 from tqdm import tqdm
 
 # 從 retrieval.py 匯入同一份模型與嵌入器
+from sentence_transformers import CrossEncoder
 import retrieval
 
 
@@ -48,15 +49,19 @@ def load_graph_and_model(graph_path: str, model_path: str, use_cache: bool = Tru
     
     model.load_state_dict(checkpoint['model_state_dict'])
     model.eval()
-    with torch.no_grad():
-        data = data.to(device)
-        table_embeddings = model.forward(data.x_dict, data.edge_index_dict)
+    # 移除預先計算 table_embeddings，因為 REaR 流程中會在 retrieve_with_resources 內部處理 (雖然那裡也是即時算，但為了流程一致性)
+    # 不過為了 retrieve_with_resources 能夠運作，我們需要傳入 model，它內部會呼叫 model.score_tables
+    # 所以這裡不需要預先計算所有 embeddings，除非我們想優化 retrieve_with_resources
+    
+    table_embeddings = None # 暫時不需要
+    
+    idx_to_id = {v: k for k, v in table_id_to_idx.items()}
 
     idx_to_id = {v: k for k, v in table_id_to_idx.items()}
     idx_to_id_str = {k: str(v) for k, v in idx_to_id.items()}
     mapping_keys_str: Set[str] = set(idx_to_id_str.values())
 
-    return device, data, table_embeddings, idx_to_id_str, mapping_keys_str
+    return device, data, table_embeddings, idx_to_id_str, mapping_keys_str, model
 
 
 def candidates_from_ground_truth(gt: Dict) -> List[str]:
@@ -154,10 +159,22 @@ def ndcg_at_k(retrieved_ids: List[str], relevant_ids: Set[str], k: int) -> float
 
 
 def evaluate(query_file: str, model_path: str, graph_path: str, top_k: int = 10, batch_size: int = 64, metric: str = "cosine", export_csv: str = None, export_json: str = None, out_dir: str = None):
-    device, data, table_embeddings, idx_to_id_str, mapping_keys_str = load_graph_and_model(graph_path, model_path)
+    device, data, table_embeddings, idx_to_id_str, mapping_keys_str, model = load_graph_and_model(graph_path, model_path)
 
     # 嵌入器（同 retrieval.py）
     embedder = retrieval.get_embedder(device=('cuda' if torch.cuda.is_available() else 'cpu'))
+    
+    # 載入表格文字與 Reranker (REaR 需要)
+    table_jsonl_path = "/user_data/TabGNN/data/table/test/feta/table.jsonl"
+    table_texts = retrieval.load_table_texts(table_jsonl_path)
+    
+    reranker = None
+    if table_texts:
+        try:
+            print("正在載入 Reranker (CrossEncoder)...")
+            reranker = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2', device=device)
+        except Exception as e:
+            print(f"無法載入 Reranker: {e}")
 
     # 解析查詢
     queries = parse_queries(query_file, mapping_keys_str)
@@ -172,34 +189,43 @@ def evaluate(query_file: str, model_path: str, graph_path: str, top_k: int = 10,
     map_k = 0.0
     ndcg10 = 0.0
 
-    # 批次嵌入查詢以加速
-    print("開始嵌入查詢向量...")
-    query_embs = embedder.encode(questions, convert_to_tensor=True, show_progress_bar=True, batch_size=batch_size)
-    query_embs = query_embs.to(device)
-    query_embs = F.normalize(query_embs, p=2, dim=1)
+    # 預先建立 col_to_table 映射以加速 retrieve_with_resources (雖然它內部也會建，但我們可以優化一下，不過為了不改動 retrieval.py 太多，我們先讓它內部建，或者我們修改 retrieval.py 接受它)
+    # 這裡我們直接呼叫 retrieval.retrieve_with_resources，它會自己處理。
+    # 注意：這會比原本的純向量矩陣運算慢很多，因為要跑 CrossEncoder。
+    
+    print("開始 REaR 評估 (這可能需要一些時間)...")
+    
+    # 為了避免重複 encode query，我們可以修改 retrieve_with_resources 接受 query_vec，但目前先保持簡單
+    
+    for i in tqdm(range(total), desc="評估中"):
+        query_text = questions[i]
+        relevant_ids = relevants[i]
+        
+        if not relevant_ids:
+            continue
 
-    with torch.no_grad():
-        for i in tqdm(range(total), desc="評估中"):
-            q_vec = query_embs[i].unsqueeze(0)
-            if metric == "l2":
-                scores = -torch.cdist(q_vec, table_embeddings, p=2).squeeze(0)
-            else:
-                scores = torch.matmul(q_vec, table_embeddings.T).squeeze(0)
-            k_val = min(top_k, scores.numel())
-            top_scores, top_indices = torch.topk(scores, k=k_val, largest=True)
-
-            # 轉成 table_id 字串
-            retrieved_ids = [idx_to_id_str[idx.item()] for idx in top_indices]
-            relevant_ids = relevants[i]
-
-            # 只有在 relevant 可對齊時才計入指標
-            if relevant_ids:
-                hit1 += hits_at_k(retrieved_ids, relevant_ids, 1)
-                hit5 += hits_at_k(retrieved_ids, relevant_ids, 5)
-                hit10 += hits_at_k(retrieved_ids, relevant_ids, 10)
-                mrr += reciprocal_rank(retrieved_ids, relevant_ids)
-                map_k += average_precision_at_k(retrieved_ids, relevant_ids, top_k)
-                ndcg10 += ndcg_at_k(retrieved_ids, relevant_ids, 10)
+        # 呼叫 REaR 檢索
+        # 注意：retrieve_with_resources 返回 List[Tuple[str, float]] (id, score)
+        results = retrieval.retrieve_with_resources(
+            query=query_text,
+            top_k=top_k,
+            model=model, # 這裡 model 是一個 DiffusionModel 實例
+            data=data,
+            embedder=embedder,
+            table_texts=table_texts,
+            device=device,
+            idx_to_id=idx_to_id_str, # 這裡傳入的是 str key 的 dict
+            reranker=reranker
+        )
+        
+        retrieved_ids = [r[0] for r in results]
+        
+        hit1 += hits_at_k(retrieved_ids, relevant_ids, 1)
+        hit5 += hits_at_k(retrieved_ids, relevant_ids, 5)
+        hit10 += hits_at_k(retrieved_ids, relevant_ids, 10)
+        mrr += reciprocal_rank(retrieved_ids, relevant_ids)
+        map_k += average_precision_at_k(retrieved_ids, relevant_ids, top_k)
+        ndcg10 += ndcg_at_k(retrieved_ids, relevant_ids, 10)
 
     # 彙總
     print("\n===== 評估結果 =====")

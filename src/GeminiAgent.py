@@ -4,14 +4,14 @@ import time
 
 class Agent:
     def __init__(self, api_keys:list[str] | str, name:str = None):
-        if type(api_keys) == type(str): self.api_keys = [api_keys]
+        if type(api_keys) == str: self.api_keys = [api_keys]
         else: self.api_keys = api_keys
         self.key_index = 0
         self.client = genai.Client(api_key=self.api_keys[self.key_index])
         self.name = name
         self.memory = ""
 
-    def query(self, prompt:str, model:str = "gemini-2.5-flash"):
+    def query(self, prompt:str, model:str = "gemini-2.5-flash", switch:bool=True):
         self.memory += prompt+"\n"+"-"*20+"\n"
         start_index = self.key_index
         while True:
@@ -25,6 +25,10 @@ class Agent:
                 return response.text
             except ClientError:
                 self.key_index = (self.key_index+1) % len(self.api_keys)
+                print("len", len(self.api_keys))
+                if not switch:
+                    print("Error: ClientError")
+                    break
                 if self.key_index == start_index:
                     print("Error: ClientError, all keys exhausted. Waiting 5 minutes...")
                     time.sleep(300)

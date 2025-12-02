@@ -7,11 +7,12 @@ import os
 import math
 
 SOURCE = "test/feta"
-
-TABLE_PATH = "/user_data/TabGNN/data/table/test/feta/table.jsonl"
-QUERY_PATH = "/user_data/TabGNN/data/test/feta/generate_query.jsonl"
+FILENAME = "query_5lines.jsonl"
 MAX_RETRIES = 2  # LLM 輸出不合規時的重試次數
-FIX = True # 從頭開始檢查有沒有生成失敗的
+FIX = False # 從頭開始檢查有沒有生成失敗的
+
+TABLE_PATH = f"/user_data/TabGNN/data/table/{SOURCE}/table.jsonl"
+QUERY_PATH = f"/user_data/TabGNN/data/generated/{SOURCE}/{FILENAME}"
 
 os.makedirs(os.path.dirname(QUERY_PATH), exist_ok=True)
 
@@ -92,7 +93,11 @@ with open("/user_data/TabGNN/results/progress.json", "r", encoding="utf-8") as f
     progress = json.load(f)
 
 if progress.get(SOURCE) is None:
-    progress[SOURCE] = 0
+    progress[SOURCE] = {FILENAME:0}
+    with open("/user_data/TabGNN/results/progress.json", "w", encoding="utf-8") as f:
+        json.dump(progress, f, ensure_ascii=False)
+elif progress[SOURCE].get(FILENAME) is None:
+    progress[SOURCE][FILENAME] = 0
     with open("/user_data/TabGNN/results/progress.json", "w", encoding="utf-8") as f:
         json.dump(progress, f, ensure_ascii=False)
 
@@ -155,7 +160,7 @@ Only return a single valid JSON object without any other text:
 
 
 def main():
-    start = 0 if FIX else progress[SOURCE]
+    start = 0 if FIX else progress[SOURCE][FILENAME]
     for i in range(start, len(table_lines)):
         table:dict = table_lines[i]
         if FIX:
@@ -233,7 +238,7 @@ def main():
         save_queries()
 
         if not FIX:
-            progress[SOURCE] = i+1
+            progress[SOURCE][FILENAME] = i+1
             with open("/user_data/TabGNN/results/progress.json", "w", encoding="utf-8") as f:
                 json.dump(progress, f, ensure_ascii=False, indent=4)
 

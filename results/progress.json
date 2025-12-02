@@ -1,3 +1,5 @@
 {
-    "test/feta": 2003
+    "test/feta": {
+        "query_origin.jsonl": 3
+    }
 }
