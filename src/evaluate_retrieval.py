@@ -94,7 +94,10 @@ def parse_queries(query_file: str, mapping_keys_str: Set[str]) -> List[Tuple[str
         for line in f:
             total_lines += 1
             obj = json.loads(line)
-            question = obj.get("question", "").strip()
+            if "questions" in obj:
+                question = obj.get("questions")[0].strip()
+            elif "question" in obj:
+                question = obj.get("question").strip()
             gt_list = obj.get("ground_truth_list", []) or []
 
             # 建立 ground truth 可對齊到圖的鍵集合
@@ -224,26 +227,18 @@ def evaluate(query_file: str, model_path: str, graph_path: str, top_k: int = 10,
         hit5 += hits_at_k(retrieved_ids, relevant_ids, 5)
         hit10 += hits_at_k(retrieved_ids, relevant_ids, 10)
         mrr += reciprocal_rank(retrieved_ids, relevant_ids)
-        map_k += average_precision_at_k(retrieved_ids, relevant_ids, top_k)
-        ndcg10 += ndcg_at_k(retrieved_ids, relevant_ids, 10)
 
     # 彙總
     print("\n===== 評估結果 =====")
-    print(f"總查詢數：{total}")
-    print(f"可對齊評估的查詢數：{eval_count}")
     if eval_count == 0:
         print("無可對齊的 ground truth，無法計算指標。")
         return
 
     results = {
-        "total": total,
-        "eval_count": eval_count,
         "Recall@1": hit1 / eval_count,
         "Recall@5": hit5 / eval_count,
         "Recall@10": hit10 / eval_count,
         "MRR@k": mrr / eval_count,
-        "MAP@k": map_k / eval_count,
-        "NDCG@10": ndcg10 / eval_count,
     }
 
     for k, v in results.items():
@@ -266,26 +261,16 @@ def evaluate(query_file: str, model_path: str, graph_path: str, top_k: int = 10,
 
 
 def main():
-    parser = argparse.ArgumentParser(description="批次評估檢索指標（Recall/MRR/MAP/NDCG/導出/度量選項）")
-    parser.add_argument("--query_file", type=str, default="/user_data/TabGNN/data/table/test/feta/query.jsonl")
-    parser.add_argument("--model_path", type=str, default="/user_data/TabGNN/checkpoints/diffusion_model_best.pt")
-    parser.add_argument("--graph_path", type=str, default="/user_data/TabGNN/data/processed/graph.pt")
-    parser.add_argument("--top_k", type=int, default=10)
-    parser.add_argument("--batch_size", type=int, default=64)
-    parser.add_argument("--metric", type=str, default="cosine", choices=["cosine", "dot", "l2"])
-    parser.add_argument("--export_csv", type=str, default=None)
-    parser.add_argument("--export_json", type=str, default=None)
-    args = parser.parse_args()
-
+    
     evaluate(
-        query_file=args.query_file,
-        model_path=args.model_path,
-        graph_path=args.graph_path,
-        top_k=args.top_k,
-        batch_size=args.batch_size,
-        metric=args.metric,
-        export_csv=args.export_csv,
-        export_json=args.export_json,
+        query_file="/user_data/TabGNN/data/table/test/feta/query.jsonl",
+        model_path="/user_data/TabGNN/checkpoints/model_test.pt",
+        graph_path="/user_data/TabGNN/data/processed/graph_evaluate.pt",
+        top_k=10,
+        batch_size=64,
+        metric="cosine",
+        export_csv=None,
+        export_json=None,
     )
 
 

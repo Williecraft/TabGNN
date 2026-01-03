@@ -4,4 +4,5 @@ sentence-transformers
 google-genai
 pandas
 tabulate
-pymilvus[milvus_lite]
+pymilvus
+milvus-lite

@@ -227,7 +227,7 @@ print("\n最終圖結構 (HeteroData):")
 print(data)
 
 # --- 儲存圖 ---
-OUTPUT_GRAPH_PATH = "/user_data/TabGNN/data/processed/graph.pt"
+OUTPUT_GRAPH_PATH = "/user_data/TabGNN/data/processed/graph_evaluate.pt"
 print(f"\n將圖儲存至 {OUTPUT_GRAPH_PATH}...")
 torch.save(data, OUTPUT_GRAPH_PATH)
 print("完成！")

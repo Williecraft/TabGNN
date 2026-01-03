@@ -130,42 +130,197 @@ class DiffusionModel(nn.Module):
 # C. 訓練流程輔助函式
 # ====================================================================
 
-def load_training_data(query_file_path: str, id_to_idx: dict):
+def load_training_data(query_file_path: str, id_to_idx: dict, data: HeteroData = None, num_hard_negatives: int = 1):
     """
     從 JSONL 檔案載入訓練查詢，並將 table_id 轉換為 GNN 節點索引。
+    同時利用圖結構挖掘困難負樣本 (Hard Negatives)。
     
     Args:
         query_file_path (str): 'generate_query.jsonl' 檔案的路徑。
         id_to_idx (dict): 將 'table_id' (str) 映射到 GNN 節點索引 (int) 的字典。
+        data (HeteroData, optional): 圖數據，用於查找鄰居作為困難負樣本。
+        num_hard_negatives (int): 每個正樣本採樣多少個困難負樣本。
         
     Returns:
-        tuple[list[str], list[int]]: 
-            - queries_text: 包含所有有效查詢問題的列表。
-            - pos_indices: 每個查詢對應的正確表格 GNN 節點索引。
+        tuple: 
+            - queries_text: 查詢文字列表。
+            - pos_indices: 正確表格索引列表。
+            - hard_neg_indices: 困難負樣本索引列表 (List[List[int]])。
     """
     training_samples = []
-    print(f"從 {query_file_path} 載入 queries...")
+    print(f"從 {query_file_path} 載入 queries (含 Hard Negatives)...")
+    
+    # 預先處理圖的鄰居關係，加速查找
+    # 建立 Table -> Neighbors (via similar_content) 的映射
+    table_neighbors = {}
+    if data is not None:
+        print("正在建立鄰居索引以進行困難負樣本挖掘...")
+        # 1. Table -> Column
+        t2c = data['table', 'has_column', 'column'].edge_index.cpu()
+        # 2. Column -> Column (similar)
+        c2c = data['column', 'similar_content', 'column'].edge_index.cpu()
+        # 3. Column -> Table (reverse)
+        # 建立 col_idx -> table_idx 映射
+        c2t_map = {}
+        for i in range(t2c.size(1)):
+            t = t2c[0, i].item()
+            c = t2c[1, i].item()
+            c2t_map[c] = t
+            
+        # 建立 table_idx -> set(neighbor_table_idxs)
+        # 這一步可能比較慢，但只跑一次
+        # 優化：直接遍歷 c2c
+        for i in tqdm(range(c2c.size(1)), desc="Building Graph Index"):
+            c_src = c2c[0, i].item()
+            c_dst = c2c[1, i].item()
+            
+            if c_src in c2t_map and c_dst in c2t_map:
+                t_src = c2t_map[c_src]
+                t_dst = c2t_map[c_dst]
+                
+                if t_src != t_dst:
+                    if t_src not in table_neighbors:
+                        table_neighbors[t_src] = set()
+                    table_neighbors[t_src].add(t_dst)
+        print(f"Total tables with neighbors: {len(table_neighbors)}")
+
     with open(query_file_path, "r", encoding='utf-8') as f:
         for line in tqdm(f, desc="載入 queries"):
             temp = json.loads(line)
-            pos_id = temp.get('table_id')
-            pos_idx = id_to_idx.get(pos_id, -1) # 查找 GNN 節點索引
+            
+            # 取得正確表格 ID：優先從 ground_truth_list 取得，否則從 id/table_id 取得
+            raw_id = None
+            ground_truth_list = temp.get('ground_truth_list', [])
+            if ground_truth_list and isinstance(ground_truth_list, list) and len(ground_truth_list) > 0:
+                # 從 ground_truth_list 的第一個元素取得 id
+                raw_id = ground_truth_list[0].get('id')
+            
+            # 如果 ground_truth_list 沒有 id，則嘗試 temp 的 id 或 table_id
+            if raw_id is None:
+                raw_id = temp.get('id') or temp.get('table_id')
+            
+            if raw_id is None:
+                continue
+            
+            pos_id = int(raw_id)
+            pos_idx = id_to_idx.get(pos_id, -1)
 
-            # 確保表格 ID 在我們的圖中存在
             if pos_idx != -1:
-                for question in temp.get('questions', []):
-                    # 確保問題不是空字串
+                # 採樣困難負樣本
+                hard_negs = []
+                if pos_idx in table_neighbors:
+                    neighbors = list(table_neighbors[pos_idx])
+                    if len(neighbors) >= num_hard_negatives:
+                        hard_negs = random.sample(neighbors, num_hard_negatives)
+                    else:
+                        # 如果鄰居不夠，重複採樣或補隨機 (這裡簡單處理：有幾個算幾個，不夠的補 -1)
+                        hard_negs = neighbors + [-1] * (num_hard_negatives - len(neighbors))
+                else:
+                    # print(f"Table {pos_id} (idx={pos_idx}) has no neighbors.")
+                    hard_negs = [-1] * num_hard_negatives # 無鄰居
+
+                questions = temp.get('questions', [])
+                if not questions and 'question' in temp:
+                    questions = [temp['question']]
+                
+                for question in questions:
                     if question and question.strip():
-                        # 儲存 (查詢文字, 正確表格的GNN索引)
-                        training_samples.append((question, pos_idx))
+                        training_samples.append((question, pos_idx, hard_negs))
+            else:
+                 # print(f"Table {pos_id} not found in id_to_idx.")
+                 pass
 
     if not training_samples:
         print("警告：沒有載入任何有效的訓練樣本。")
-        return [], []
+        return [], [], []
 
-    # 解壓縮 (unzip) 列表
-    queries_text, pos_indices = [list(t) for t in zip(*training_samples)]
-    return queries_text, pos_indices
+    queries_text, pos_indices, hard_neg_indices = [list(t) for t in zip(*training_samples)]
+    
+    # Safety check
+    if data is not None:
+        num_tables = data['table'].num_nodes
+        max_idx = max(pos_indices)
+        if max_idx >= num_tables:
+            print(f"Error: Max pos_idx {max_idx} exceeds num_tables {num_tables}")
+            # Filter out invalid samples
+            valid_samples = []
+            for q, p, h in zip(queries_text, pos_indices, hard_neg_indices):
+                if p < num_tables:
+                    valid_h = [idx for idx in h if idx < num_tables]
+                    # Pad if needed
+                    if len(valid_h) < num_hard_negatives:
+                         valid_h += [-1] * (num_hard_negatives - len(valid_h))
+                    valid_samples.append((q, p, valid_h))
+            
+            if not valid_samples:
+                return [], [], []
+            queries_text, pos_indices, hard_neg_indices = [list(t) for t in zip(*valid_samples)]
+            print(f"Filtered to {len(queries_text)} valid samples.")
+
+    return queries_text, pos_indices, hard_neg_indices
+
+
+def mine_hard_negatives_topk(model, data, query_vectors, pos_indices, 
+                              num_hard_negatives=5, device='cuda'):
+    """
+    Query-Aware 困難負樣本挖掘：
+    對每個查詢，用模型當前的向量找出最相似的 K 張錯誤表格。
+    
+    這比使用圖鄰居更精準，因為它直接針對每個 Query 找出模型最容易搞混的表格。
+    
+    Args:
+        model: 訓練中的 GNN 模型
+        data: PyG HeteroData 圖資料
+        query_vectors: 查詢向量 [Q, D]
+        pos_indices: 每個查詢對應的正確表格索引
+        num_hard_negatives: 要挖掘的困難負樣本數量
+        device: 運算裝置
+        
+    Returns:
+        List[List[int]]: 每個查詢的 K 個困難負樣本索引
+    """
+    model.eval()
+    with torch.no_grad():
+        # 計算所有表格的向量
+        table_emb = model.forward(data.x_dict, data.edge_index_dict)
+        table_emb = F.normalize(table_emb, p=2, dim=1)  # [N, D]
+        q_norm = F.normalize(query_vectors, p=2, dim=1)  # [Q, D]
+        
+        num_tables = table_emb.size(0)
+        num_queries = q_norm.size(0)
+        
+        # 限制 num_hard_negatives 不超過表格數量減一
+        actual_k = min(num_hard_negatives, num_tables - 1)
+        
+        # 分塊計算相似度以節省記憶體
+        chunk_size = 1024
+        all_topk_indices = []
+        
+        for start in range(0, num_queries, chunk_size):
+            end = min(start + chunk_size, num_queries)
+            q_chunk = q_norm[start:end]  # [chunk, D]
+            
+            # 計算相似度矩陣: [chunk, N]
+            sim_chunk = torch.matmul(q_chunk, table_emb.T)
+            
+            # 把正確答案的分數設為負無窮大（排除它）
+            for i in range(end - start):
+                pos_idx = pos_indices[start + i]
+                if 0 <= pos_idx < num_tables:
+                    sim_chunk[i, pos_idx] = -float('inf')
+            
+            # 取出每個查詢的 Top-K
+            _, topk_idx = torch.topk(sim_chunk, k=actual_k, dim=1)
+            all_topk_indices.extend(topk_idx.tolist())
+        
+        # 如果 actual_k 小於要求的數量，補 -1
+        if actual_k < num_hard_negatives:
+            padding = [-1] * (num_hard_negatives - actual_k)
+            all_topk_indices = [negs + padding for negs in all_topk_indices]
+        
+    model.train()
+    return all_topk_indices
+
 
 def embed_queries(queries_text: list, embedder, device):
     """
@@ -248,7 +403,7 @@ def compute_scores_chunked(query_emb_norm: torch.Tensor,
 
 
 def train_one_epoch(model, data, optimizer, scaler, scheduler, 
-                    query_vectors, pos_indices, hps, epoch, device):
+                    query_vectors, pos_indices, hard_neg_indices, hps, epoch, device):
     """
     執行一個週期的訓練。
     """
@@ -299,7 +454,87 @@ def train_one_epoch(model, data, optimizer, scaler, scheduler,
             logits /= curr_temp
             
             # 4. 計算 CrossEntropy Loss (全表格 softmax)
-            loss = F.cross_entropy(logits, labels, label_smoothing=curr_smooth)
+            # 這是原本的 In-batch Negatives Loss
+            loss_in_batch = F.cross_entropy(logits, labels, label_smoothing=curr_smooth)
+            
+            # 5. 加入 Hard Negative Loss
+            # 我們希望 Query 與 Hard Negative 的相似度越低越好
+            # 這裡使用一個簡單的 Margin Ranking Loss 概念，或者直接將 Hard Negatives 視為額外的負樣本類別
+            # 為了簡單且有效，我們這裡採用 "InfoNCE with Hard Negatives" 的變體
+            # 即：最大化 (Q . Pos) / (Sum(Q . Negs))
+            # 但由於 logits 已經是全表格的相似度，其實 Hard Negatives 已經在分母裡了 (因為它們也是表格)
+            # 只是 In-batch Negatives 只有 Batch Size 個，而全表格 Softmax 包含了所有表格
+            # 等等，原本的 logits 是 [B, N]，N 是所有表格。
+            # 所以 F.cross_entropy(logits, labels) 其實已經包含了所有表格作為負樣本！
+            # 這意味著 Hard Negatives (作為 N 中的一部分) 已經被考慮進去了。
+            # 
+            # 那麼，為什麼還需要特別挖掘 Hard Negatives？
+            # 因為在標準的 InfoNCE 中，通常只用 In-batch negatives (分母只有 B 個)。
+            # 但這裡我們用了 `compute_scores_chunked` 算出了 [B, N] 的所有分數。
+            # 所以我們的 Loss 其實已經是 "Global Softmax" 了！這比 In-batch negatives 強很多。
+            # 
+            # 不過，為了進一步強化，我們可以對 Hard Negatives 加重懲罰 (Reweighting)。
+            # 或者，如果我們改用 Contrastive Loss (Margin Loss)，Hard Negatives 就很有用。
+            # 
+            # 讓我們採用 "Hard Negative Reweighting" 策略：
+            # 在計算 CrossEntropy 時，雖然所有負樣本都在，但模型可能對 Hard Negatives 的梯度不夠大。
+            # 我們可以額外加一個 Margin Loss： max(0, sim(Q, Neg) - sim(Q, Pos) + margin)
+            
+            loss_hard = 0.0
+            if hps.get('USE_HARD_NEG', False):
+                # 取出對應的 Hard Negatives 索引
+                # hard_neg_indices 是 List[List[int]]，長度為 len(query_vectors)
+                # 我們需要取出當前 batch 的 hard negs
+                batch_hard_negs = [hard_neg_indices[i] for i in batch_idx] # [B, K]
+                
+                # 扁平化處理，並過濾掉 -1
+                # 為了向量化計算，我們需要從 logits 中取出這些位置的分數
+                # logits: [B, N]
+                
+                # 建立一個 mask 或 gather 索引
+                # 這裡為了簡單，我們逐個樣本計算 Margin Loss
+                margin = 0.2
+                
+                # 取得正樣本分數: logits[b, label]
+                # 取得負樣本分數: logits[b, hard_neg]
+                
+                # 由於 logits 已經除以 temp，我們還原一下或者直接用
+                # 通常 Margin Loss 作用在原始 cosine similarity 上比較好控制 margin
+                # 但這裡為了方便，直接用 logits (scaled similarity)
+                
+                # 重新計算原始相似度 (不除 temp) 比較安全
+                # 但為了效能，我們直接用 logits * temp
+                
+                pos_scores = logits[range(len(batch_idx)), labels] # [B]
+                
+                # 收集負樣本分數
+                # 這裡稍微麻煩一點，因為每個樣本的負樣本數量可能不同 (雖然我們補了 -1)
+                # 且我們需要從 logits 裡 gather
+                
+                # 轉換 batch_hard_negs 為 tensor
+                # 注意：-1 的索引會報錯，所以要處理
+                # 先轉成 tensor，把 -1 換成 0 (或其他無害索引)，然後 mask 掉 loss
+                
+                hard_negs_tensor = torch.tensor(batch_hard_negs, device=device, dtype=torch.long) # [B, K]
+                mask = (hard_negs_tensor != -1)
+                safe_hard_negs = hard_negs_tensor.clone()
+                safe_hard_negs[~mask] = 0 # 避免 gather 越界
+                
+                # gather 負樣本分數: [B, K]
+                neg_scores = torch.gather(logits, 1, safe_hard_negs)
+                
+                # Margin Loss: max(0, neg - pos + margin/temp)
+                # 因為 logits 是 sim/temp，所以 margin 也要除以 temp
+                target_margin = margin / curr_temp
+                
+                losses = F.relu(neg_scores - pos_scores.unsqueeze(1) + target_margin)
+                
+                # 只計算有效的負樣本
+                losses = losses * mask.float()
+                
+                loss_hard = losses.sum() / (mask.sum() + 1e-9)
+            
+            loss = loss_in_batch + 0.5 * loss_hard # 0.5 是權重，可調
 
         # 反向傳播
         scaler.scale(loss).backward()
@@ -385,13 +620,26 @@ def main():
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f"使用的設備: {device}")
 
-    # 基礎配置
+    # ========================================
+    # 訓練模式選擇
+    # ========================================
+    USE_GRID_SEARCH = False  # True: 執行 Grid Search | False: 使用最佳參數直接訓練
+    
+    # 最佳參數 (Grid Search 結果)
+    BEST_PARAMS = {
+        'LEARNING_RATE': 0.0003,
+        'HIDDEN_CHANNELS': 768,
+        'DROPOUT': 0.1,
+        'WEIGHT_DECAY': 0.001
+    }
+
+    # 配置
     BASE_CONFIG = {
-        'GRAPH_FILE': "/user_data/TabGNN/data/processed/graph.pt",
-        'QUERY_FILE': "/user_data/TabGNN/data/test/feta/generate_query.jsonl",
+        'GRAPH_FILE': "/user_data/TabGNN/data/processed/graph_evaluate.pt",
+        'QUERY_FILE': "/user_data/TabGNN/data/table/test/feta/query.jsonl",
         'MODEL_NAME': 'BAAI/bge-m3',
         'NUM_EPOCHS': 10,
-        'WARMUP_EPOCHS': 2, # 縮短 warmup 以適應較短的 grid search epoch
+        'WARMUP_EPOCHS': 2,
         'BATCH_SIZE': 128,
         'CLIP_GRAD_NORM': 0.60,
         'CHUNK_SIZE': 1024,
@@ -401,17 +649,20 @@ def main():
         'SMOOTH_END': 0.060,
     }
 
-    # 定義參數網格 (Grid Search) - 擴大搜索範圍
-    PARAM_GRID = {
-        'LEARNING_RATE': [5e-5, 1e-4, 3e-4, 5e-4, 1e-3],
-        'HIDDEN_CHANNELS': [256, 512, 768],
-        'DROPOUT': [0.1, 0.2, 0.3, 0.4, 0.5],
-        'WEIGHT_DECAY': [1e-3, 1e-2, 5e-2]
-    }
-
-    # 生成所有參數組合
-    keys, values = zip(*PARAM_GRID.items())
-    param_combinations = [dict(zip(keys, v)) for v in itertools.product(*values)]
+    # Grid Search 
+    if USE_GRID_SEARCH:
+        PARAM_GRID = {
+            'LEARNING_RATE': [5e-5, 1e-4, 3e-4, 5e-4, 1e-3],
+            'HIDDEN_CHANNELS': [256, 512, 768],
+            'DROPOUT': [0.1, 0.2, 0.3, 0.4, 0.5],
+            'WEIGHT_DECAY': [1e-3, 1e-2, 5e-2]
+        }
+        keys, values = zip(*PARAM_GRID.items())
+        param_combinations = [dict(zip(keys, v)) for v in itertools.product(*values)]
+    else:
+        # 直接使用最佳參數
+        param_combinations = [BEST_PARAMS]
+        keys = list(BEST_PARAMS.keys())
     
     print(f"總共 {len(param_combinations)} 組參數組合待測試。")
 
@@ -423,7 +674,7 @@ def main():
         headers = list(keys) + ['MRR', 'Recall@1', 'Recall@5', 'Recall@10']
         writer.writerow(headers)
 
-    # --- 2. 載入圖結構與映射表 (只載入一次) ---
+    # --- 2. 載入圖與映射表 ---
     try:
         data_cpu = torch.load(BASE_CONFIG['GRAPH_FILE'], map_location='cpu', weights_only=False)
     except FileNotFoundError:
@@ -441,7 +692,8 @@ def main():
         return
 
     # --- 3. 載入並嵌入訓練數據 (只載入一次) ---
-    queries_text, pos_indices = load_training_data(BASE_CONFIG['QUERY_FILE'], id_to_idx)
+    # 傳入 data 以便挖掘 Hard Negatives
+    queries_text, pos_indices, hard_neg_indices = load_training_data(BASE_CONFIG['QUERY_FILE'], id_to_idx, data=data_cpu, num_hard_negatives=3)
     if not queries_text:
         return
 
@@ -456,12 +708,16 @@ def main():
     best_model_state = None
 
     for idx, params in enumerate(param_combinations):
-        print(f"\n=== Grid Search 組合 {idx+1}/{len(param_combinations)} ===")
+        print(f"\n=== {idx+1}/{len(param_combinations)} ===")
         print(f"參數: {params}")
         
         # 合併基礎配置與當前參數
         current_hps = BASE_CONFIG.copy()
         current_hps.update(params)
+        current_hps['USE_HARD_NEG'] = True # 啟用 Hard Negative Loss
+        
+        # Query-Aware Hard Negative 挖掘間隔 (每幾個 epoch 重新挖掘)
+        REMINING_INTERVAL = 1
 
         # 複製圖數據到 GPU (確保每次訓練都是獨立的)
         data = data_cpu.clone().to(device)
@@ -474,11 +730,21 @@ def main():
             device=device
         )
         
+        # 複製初始困難負樣本索引（這樣不同 grid search 組合之間互不影響）
+        current_hard_neg_indices = hard_neg_indices.copy()
+        
         # 訓練迴圈
         for epoch in range(1, current_hps['NUM_EPOCHS'] + 1):
+            # 定期使用 Query-Aware 方法重新挖掘困難負樣本
+            if epoch > 1 and epoch % REMINING_INTERVAL == 0:
+                current_hard_neg_indices = mine_hard_negatives_topk(
+                    model, data, query_vectors, pos_indices,
+                    num_hard_negatives=3, device=device
+                )
+            
             avg_loss, curr_temp, curr_smooth = train_one_epoch(
                 model, data, optimizer, scaler, scheduler,
-                query_vectors, pos_indices, current_hps, epoch, device
+                query_vectors, pos_indices, current_hard_neg_indices, current_hps, epoch, device
             )
             
             # 每個 epoch 結束後簡單打印，避免輸出過多
@@ -486,7 +752,6 @@ def main():
                  print(f"  Epoch {epoch}/{current_hps['NUM_EPOCHS']} | Loss: {avg_loss:.4f}")
 
         # 訓練結束後評估
-        print("  正在評估...")
         metrics = evaluate_retrieval(
             model, data, query_vectors, pos_indices, current_hps, device
         )
@@ -524,7 +789,7 @@ def main():
 
     # 儲存最佳模型
     if best_model_state is not None:
-        save_path = "/user_data/TabGNN/checkpoints/diffusion_model_best.pt"
+        save_path = "/user_data/TabGNN/checkpoints/model_test.pt"
         save_data = {
             'model_state_dict': best_model_state,
             'hps': best_params,

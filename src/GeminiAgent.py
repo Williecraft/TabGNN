@@ -25,7 +25,6 @@ class Agent:
                 return response.text
             except ClientError:
                 self.key_index = (self.key_index+1) % len(self.api_keys)
-                print("len", len(self.api_keys))
                 if not switch:
                     print("Error: ClientError")
                     break

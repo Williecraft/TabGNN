@@ -9,23 +9,58 @@ import math
 SOURCE = "test/feta"
 FILENAME = "query_origin.jsonl"
 MAX_RETRIES = 2  # LLM 輸出不合規時的重試次數
-FIX = False # 從頭開始檢查有沒有生成失敗的
+FIX = True # 從頭開始檢查有沒有生成失敗的
 
 TABLE_PATH = f"/user_data/TabGNN/data/table/{SOURCE}/table.jsonl"
 QUERY_PATH = f"/user_data/TabGNN/data/generated/{SOURCE}/{FILENAME}"
 
 os.makedirs(os.path.dirname(QUERY_PATH), exist_ok=True)
 
-def json2csv(jtable, top = 10):
+def json2csv(jtable: dict, top=10) -> str:
+    import csv
+    import pandas as pd
 
-    header = next(csv.reader(jtable["header"]))
-    reader = csv.reader(jtable["instances"])
-    instans = [next(reader) for i in range(len(jtable["instances"]))]
+    def parse_csv_row(s: str) -> list[str]:
+        return next(csv.reader([s]))
 
-    jtable = pd.DataFrame(data=instans, columns=header)
+    # ---- header ----
+    header = jtable.get("header", [])
+    if isinstance(header, str):
+        header = parse_csv_row(header)
+    elif isinstance(header, list):
+        if len(header) == 1 and isinstance(header[0], str) and ("," in header[0]):
+            header = parse_csv_row(header[0])
+        else:
+            header = [("" if h is None else str(h)) for h in header]
+    else:
+        header = [str(header)]
 
-    top_n = jtable.head(top)
-    return top_n.to_csv(index=False)
+    # ---- instances ----
+    instances = jtable.get("instances", [])
+    rows = instances if top is None else instances[:int(top)]
+
+    parsed_rows = []
+    for r in rows:
+        if isinstance(r, str):
+            parsed_rows.append(parse_csv_row(r))
+        elif isinstance(r, list):
+            parsed_rows.append([("" if x is None else str(x)) for x in r])
+        else:
+            parsed_rows.append([str(r)])
+
+    # ---- 對齊欄數（避免某些列欄位數不一致）----
+    ncol = len(header)
+    fixed_rows = []
+    for row in parsed_rows:
+        if len(row) < ncol:
+            row = row + [""] * (ncol - len(row))
+        elif len(row) > ncol:
+            row = row[:ncol]
+        fixed_rows.append(row)
+
+    df = pd.DataFrame(fixed_rows, columns=header)
+    return df.to_csv(index=False)
+
 
 def is_valid_output(obj):
     """
