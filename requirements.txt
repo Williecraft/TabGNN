@@ -1,0 +1,8 @@
+torch 
+torch_geometric 
+sentence-transformers
+google-genai
+pandas
+tabulate
+pymilvus
+milvus-lite

@@ -1,0 +1,9 @@
+{
+    "test/feta": {
+        "query_origin.jsonl": 2003,
+        "query_5lines.jsonl": 2003
+    },
+    "train/spider_multitabqa": {
+        "query_ollama.jsonl": 652
+    }
+}
