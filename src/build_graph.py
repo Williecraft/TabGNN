@@ -8,8 +8,8 @@ from sentence_transformers import SentenceTransformer
 from tqdm import tqdm
 
 # ========= 可調參數 =========
-TABLE_JSONL_PATH = '/user_data/TabGNN/data/table/test/feta/table.jsonl'
-OUTPUT_GRAPH_PATH = "/user_data/TabGNN/data/processed/graph_evaluate.pt"
+TABLE_JSONL_PATH = '/user_data/TabGNN/data/table/train/feta/table.jsonl'
+OUTPUT_GRAPH_PATH = "/user_data/TabGNN/data/processed/graph_train.pt"
 MODEL_NAME = 'BAAI/bge-m3'
 DEVICE = 'cuda'
 
