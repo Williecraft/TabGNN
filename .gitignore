@@ -4,4 +4,5 @@ log.txt
 venv/
 env/
 config/api_keys.json
-data/
+data/processed
+data/table
